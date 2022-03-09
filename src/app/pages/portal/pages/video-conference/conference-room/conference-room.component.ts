@@ -204,7 +204,7 @@ export class ConferenceRoomComponent implements OnInit {
 
     this.client.on(ClientEvent.RemoteStreamAdded, (evt) => {
       console.log('-- Remote Stream Added');
-      const stream = evt.stream as Stream;
+      const stream = evt.stream;
       this.client.subscribe(stream, { audio: true, video: true }, (err) => {
         console.log('Subscribe stream failed', err);
       });
@@ -232,7 +232,7 @@ export class ConferenceRoomComponent implements OnInit {
 
     this.client.on(ClientEvent.RemoteStreamRemoved, (evt) => {
       console.log('-- Remote Stream Removed');
-      const stream = evt.stream as Stream;
+      const stream = evt.stream;
       if (stream) {
         stream.stop();
         this.remoteCalls = [];
