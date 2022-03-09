@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/quotes */
 /* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/semi */
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
@@ -67,8 +68,8 @@ export class ConferenceRoomComponent implements OnInit {
     private store: Store<{ user: User }>
   ) {
     this.video = document.createElement('video');
-    this.video.width = 640;
-    this.video.height = 480;
+    this.video.style.width = '140%';
+    this.video.style.height = '100%';
     this.video.setAttribute('autoplay', '');
     console.log(this.video);
   }
@@ -80,7 +81,7 @@ export class ConferenceRoomComponent implements OnInit {
       navigator.mediaDevices,
       '][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]'
     );
-    this.videoContainer.nativeElement.appendChild(this.video);
+    document.getElementById('agora_local').appendChild(this.video);
     this.initWebRTC();
   }
 
@@ -217,12 +218,12 @@ export class ConferenceRoomComponent implements OnInit {
       if (!this.remoteCalls.length) {
         this.remoteCalls.push(id);
         this.video2 = document.createElement('video');
-        this.video2.width = 620;
-        this.video2.height = 700;
+        this.video2.style.width = 'inherit';
+        this.video2.style.height = 'inherit';
         this.video2.setAttribute('autoplay', '');
         this.video2.srcObject = stream.stream;
         console.log(this.video2);
-        this.remoteVideo.nativeElement.appendChild(this.video2);
+        document.getElementById('remote').appendChild(this.video2);
         setTimeout(() => {
           stream.play(id);
         }, 1000);

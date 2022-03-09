@@ -1,32 +1,21 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title class="navbar-title">Video Conference</ion-title>
-  </ion-toolbar>
-</ion-header>
 <ion-content padding color="light">
   <div #agora_local id="agora_local" class="local">
-    <p>
+    <!-- <p>
       <b>(ME)</b>
-    </p>
+    </p> -->
   </div>
-  <div id="container">
-    <ion-grid>
-      <ion-row>
-        <ion-col size="12"> </ion-col>
-        <ion-col size="12">
-          <div class="remote" #remote id="remote">
-            <ng-container *ngFor="let call of remoteCalls">
-              <div class="remote" [id]="call.id"></div>
-              <p>
-                <b>(REMOTE)</b>
-              </p>
-            </ng-container>
-          </div>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </div>
+  <ion-grid class="ion-no-padding">
+    <ion-row>
+      <ion-col size="12">
+        <div class="remote" #remote id="remote">
+          <ng-container *ngFor="let call of remoteCalls">
+            <div [id]="call.id"></div>
+            <!-- <p>
+              <b>(REMOTE)</b>
+            </p> -->
+          </ng-container>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
