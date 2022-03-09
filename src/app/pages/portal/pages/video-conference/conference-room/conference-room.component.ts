@@ -65,7 +65,13 @@ export class ConferenceRoomComponent implements OnInit {
     private toast: ToastController,
     public loadingController: LoadingController,
     private store: Store<{ user: User }>
-  ) {}
+  ) {
+    this.video = document.createElement('video');
+    this.video.width = 640;
+    this.video.height = 480;
+    this.video.setAttribute('autoplay', '');
+    console.log(this.video);
+  }
 
   ngOnInit() {}
 
@@ -74,13 +80,7 @@ export class ConferenceRoomComponent implements OnInit {
       navigator.mediaDevices,
       '][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]'
     );
-    this.video = document.createElement('video');
-    this.video.width = 640;
-    this.video.height = 480;
-    this.video.setAttribute('autoplay', '');
     this.videoContainer.nativeElement.appendChild(this.video);
-    console.log(this.video);
-    // this.remoteVideo.nativeElement.appendChild(this.video2);
     this.initWebRTC();
   }
 
