@@ -1,9 +1,11 @@
+import { ConferenceRoomComponent } from './conference-room/conference-room.component';
 /* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/no-shadow */
 import { ApiService } from './../../../../services/api/api.service';
 /* eslint-disable no-underscore-dangle */
 import { AuthService } from './../../../../services/auth/auth.service';
 import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-video-conference',
@@ -13,7 +15,11 @@ import { Component, OnInit } from '@angular/core';
 export class VideoConferenceComponent implements OnInit {
   me: any;
   schedules: any;
-  constructor(private auth: AuthService, private api: ApiService) {}
+  constructor(
+    private auth: AuthService,
+    private api: ApiService,
+    public modalController: ModalController
+  ) {}
 
   ngOnInit() {}
 
@@ -41,5 +47,13 @@ export class VideoConferenceComponent implements OnInit {
       console.log(res);
       this.schedules = res.env.schedules;
     });
+  }
+
+  async openRoom() {
+    const modal = await this.modalController.create({
+      component: ConferenceRoomComponent,
+      cssClass: 'my-custom-class',
+    });
+    return await modal.present();
   }
 }
