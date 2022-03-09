@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 
 import { PortalRoutingModule } from './portal-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { StoreModule } from '@ngrx/store';
+import { userReducer } from 'src/app/store/user/user.reducer';
 
 @NgModule({
   declarations: [PortalComponent],
@@ -14,6 +16,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     IonicModule,
     ReactiveFormsModule,
     FormsModule,
+    StoreModule.forFeature('user', userReducer),
   ],
 })
 export class PortalModule {}
