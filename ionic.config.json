@@ -1,5 +1,7 @@
 {
   "name": "iCertify-mobile",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

@@ -1,0 +1,170 @@
+@import "../../../assets/scss/variables.scss";
+
+ion-content {
+  --background: linear-gradient(
+      278deg,
+      rgb(44, 17, 85, 0.65) 0%,
+      rgb(60, 26, 111, 0.65) 46%,
+      rgb(121, 77, 187, 0.65) 100%
+    ),
+    url("../../../assets/images/register-bg.jpg") no-repeat center center fixed;
+  -moz-background-size: cover;
+  background-size: cover;
+  width: 100%;
+
+  .img-container {
+    height: 12rem;
+    width: 12rem;
+    background: radial-gradient(
+      #f1f1f1 30%,
+      rgb(221, 221, 221) 50%,
+      #aeadaf 100%
+    );
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    margin-top: 17%;
+  }
+
+  img {
+    width: 50%;
+  }
+}
+
+.login-button {
+  --background: linear-gradient(
+    45deg,
+    rgb(44, 17, 85) 0%,
+    rgb(60, 26, 111, 1) 46%,
+    rgb(121, 77, 187) 100%
+  );
+  ion-icon {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+// ion-content {
+//   ion-grid {
+//     transform: translateY(10vh);
+//     padding: 0 0.5rem;
+//     ion-col {
+//       display: flex;
+//       height: 100%;
+//       margin-top: max(5vh, min(2rem, 5vw));
+//       img {
+//         width: 75%;
+//         margin: auto auto;
+//         padding: 1rem;
+//         background: rgba(#fff, 0.25);
+//         border-radius: 10px;
+//       }
+//     }
+//   }
+
+ion-footer {
+  ion-row {
+    padding-top: 5vh;
+    background: transparent;
+    display: block;
+    ion-fab-button {
+      margin-right: 2.5vh;
+    }
+    ion-list {
+      border-radius: 20px 20px 0 0;
+      ion-list-header {
+        ion-label {
+          font-weight: bold;
+          font-size: 1.8em;
+          color: var(--ion-text-color);
+        }
+      }
+    }
+    .lower {
+      background: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #565656;
+    }
+  }
+
+  ion-toolbar {
+    ion-title {
+      font-size: 10px;
+      width: 100%;
+    }
+  }
+}
+
+// @media only screen and (min-width: 768px) {
+//   ion-content {
+//     ion-grid {
+//       ion-col {
+//         img {
+//           width: 50%;
+//         }
+//       }
+//     }
+//   }
+
+//   img.qc-logo-1,
+//   img.qc-logo-2 {
+//     width: 18% !important;
+//   }
+
+//   ion-footer {
+//     ion-fab {
+//       right: 6rem;
+//     }
+
+//     ion-list {
+//       padding: 0 9rem;
+//     }
+//   }
+// }
+
+// @media only screen and (min-width: 1024px) {
+//   img.qc-logo-1,
+//   img.qc-logo-2 {
+//     width: 14% !important;
+//   }
+//   ion-footer {
+//     ion-fab {
+//       right: 12rem;
+//     }
+
+//     ion-list {
+//       padding: 0 15rem;
+//     }
+//   }
+// }
+
+// @media only screen and (min-width: 1440px) {
+//   img.qc-logo-1,
+//   img.qc-logo-2 {
+//     width: 8% !important;
+//   }
+
+//   ion-content {
+//     ion-grid {
+//       ion-col {
+//         img {
+//           width: 30%;
+//         }
+//       }
+//     }
+//   }
+//   ion-footer {
+//     ion-fab {
+//       right: 21rem;
+//     }
+
+//     ion-list {
+//       padding: 0 24rem;
+//     }
+//   }
+// }
+// }

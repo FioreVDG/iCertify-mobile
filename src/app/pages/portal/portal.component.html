@@ -1,0 +1,37 @@
+<ion-menu menuId="main-menu" contentId="main">
+  <ion-content color="light">
+    <div class="menu-header-bg"></div>
+    <div class="header-content">
+      <img [src]="" alt="" />
+      <ion-label *ngIf="me">
+        <h2>{{ me.firstName }} {{ me.lastName }}</h2>
+        <p>{{ me.type }}</p>
+      </ion-label>
+    </div>
+    <ion-list lines="none" class="menu-items">
+      <section *ngFor="let menu of menuList">
+        <ion-item
+          *ngIf="menu.onSelect"
+          routerLinkActive="{{ menu.router ? 'active' : '' }}"
+          [routerLink]="menu.router"
+          (click)="menu.onSelect()"
+        >
+          <ion-icon [name]="menu.icon" slot="start"></ion-icon>
+          <ion-label>{{ menu.label }}</ion-label>
+        </ion-item>
+
+        <!-- <ion-item *ngIf="menu.onSelect === null">
+          <ion-icon [name]="menu.icon" slot="start"></ion-icon>
+          <ion-label>{{ menu.label }}</ion-label>
+          <ion-toggle (ionChange)="toggleTheme($event)"></ion-toggle>
+        </ion-item> -->
+      </section>
+    </ion-list>
+  </ion-content>
+  <ion-footer>
+    <ion-button (click)="logout()" expand="full" fill="clear" color="danger">
+      Logout <ion-icon name="log-out-outline"></ion-icon>
+    </ion-button>
+  </ion-footer>
+</ion-menu>
+<ion-router-outlet id="main"></ion-router-outlet>

@@ -1,0 +1,76 @@
+<ion-content class="background-image" [fullscreen]="true">
+  <div class="img-container">
+    <img src="../../../assets/images/iCertify-logo.png" alt="" />
+  </div>
+</ion-content>
+<ion-footer class="ion-no-border">
+  <ion-row>
+    <ion-fab vertical="top" horizontal="end">
+      <ion-fab-button (click)="login()" class="login-button">
+        <ion-icon name="arrow-forward-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+
+    <ion-list lines="full">
+      <ion-list-header class="ion-margin">
+        <ion-label>Sign In</ion-label>
+      </ion-list-header>
+
+      <ion-item-group class="ion-margin-horizontal ion-margin-bottom">
+        <form [formGroup]="credentials">
+          <div class="ion-margin-vertical">
+            <ion-item>
+              <ion-input
+                formControlName="email"
+                placeholder="Email"
+              ></ion-input>
+              <ion-icon name="mail-outline" slot="end"></ion-icon>
+            </ion-item>
+            <ion-text
+              *ngIf="
+                !credentials.get('email').valid &&
+                credentials.get('email').touched
+              "
+            >
+              <small
+                *ngIf="credentials.get('email').hasError('email')"
+                style="color: red"
+              >
+                *Please enter a valid Email</small
+              >
+            </ion-text>
+            <ion-item
+              ><ion-input
+                formControlName="password"
+                placeholder="Password"
+                [type]="showPassword ? 'text' : 'password'"
+              ></ion-input>
+              <ion-icon
+                [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"
+                slot="end"
+                (click)="showPassword = !showPassword"
+              ></ion-icon
+            ></ion-item>
+            <ion-text
+              *ngIf="
+                !credentials.get('password').valid &&
+                credentials.get('password').touched
+              "
+            >
+              <small
+                *ngIf="credentials.get('password').hasError('required')"
+                style="color: red"
+                >*Please enter your Password</small
+              >
+            </ion-text>
+          </div>
+        </form>
+      </ion-item-group>
+    </ion-list>
+    <ion-toolbar class="ion-padding lower">
+      <ion-title class="ion-text-center"
+        >@{{ year }} iCertify, Inc. All Rights Reserved.</ion-title
+      >
+    </ion-toolbar>
+  </ion-row>
+</ion-footer>
