@@ -226,10 +226,12 @@ export class ConferenceRoomComponent implements OnInit {
           this.video2.play();
         };
         console.log(this.video2);
-        document.getElementById('remote').appendChild(this.video2);
         setTimeout(() => {
-          stream.play(id);
-        }, 1000);
+          document.getElementById('remote')?.appendChild(this.video2);
+        }, 500);
+        // setTimeout(() => {
+        //   stream.play(id);
+        // }, 1000);
         //
       }
     });
