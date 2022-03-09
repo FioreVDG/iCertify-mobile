@@ -68,7 +68,7 @@ export class ConferenceRoomComponent implements OnInit {
     private store: Store<{ user: User }>
   ) {
     this.video = document.createElement('video');
-    this.video.style.width = '140%';
+    this.video.style.width = '100%';
     this.video.style.height = '100%';
     this.video.setAttribute('autoplay', '');
     console.log(this.video);
