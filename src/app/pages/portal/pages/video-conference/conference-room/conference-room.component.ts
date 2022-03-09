@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-conference-room',
@@ -6,9 +6,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./conference-room.component.scss'],
 })
 export class ConferenceRoomComponent implements OnInit {
+  @Input() schedule: string;
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit() {}
-
+  ngOnInit() {
+    console.log(this.schedule);
+  }
 }
