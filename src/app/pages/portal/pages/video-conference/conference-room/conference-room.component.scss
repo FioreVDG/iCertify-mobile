@@ -1,0 +1,54 @@
+ion-header > ion-toolbar {
+  --background: rgb(15, 99, 221);
+  --background: linear-gradient(
+    27deg,
+    rgba(15, 99, 221, 1) 0%,
+    rgba(70, 135, 230, 1) 46%,
+    rgba(62, 194, 240, 1) 100%
+  );
+}
+// .local {
+//   width: 100%;
+//   height: 60vh;
+//   position: relative;
+//   p {
+//     position: absolute;
+//     margin: 0;
+//     text-align: center;
+//     width: 97.5%;
+//     padding: 0.5rem;
+//     background: #26184a8b;
+//     color: #fff;
+//     bottom: 0;
+//     z-index: 99;
+//   }
+// }
+
+.local {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  width: 70vw;
+  height: 30vh;
+  border-radius: 5px;
+  overflow: hidden;
+  z-index: 1;
+}
+.remote {
+  background: #565656;
+  width: 100%;
+  height: 60vh;
+  position: relative;
+  p {
+    position: absolute;
+    margin: 0;
+    text-align: center;
+    width: 97.5%;
+    padding: 0.5rem;
+    background: #26184a8b;
+    color: #fff;
+    bottom: 0;
+    z-index: 99;
+    text-transform: uppercase;
+  }
+}

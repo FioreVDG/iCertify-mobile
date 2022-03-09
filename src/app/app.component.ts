@@ -28,6 +28,7 @@ export class AppComponent {
         .checkPermission(this.androidPermissions.PERMISSION.CAMERA)
         .then(
           (result) => {
+            console.log(result);
             if (!result.hasPermission) {
               this.androidPermissions.requestPermission(
                 this.androidPermissions.PERMISSION.CAMERA
@@ -38,16 +39,22 @@ export class AppComponent {
               );
             }
           },
-          (err) =>
+          (err) => {
+            console.log(err);
             this.androidPermissions.requestPermission(
               this.androidPermissions.PERMISSION.CAMERA
-            )
+            );
+          }
         );
 
-      this.androidPermissions.requestPermissions([
-        this.androidPermissions.PERMISSION.CAMERA,
-        this.androidPermissions.PERMISSION.GET_ACCOUNTS,
-      ]);
+      this.requestPermissions();
     });
+  }
+  requestPermissions() {
+    this.androidPermissions.requestPermissions([
+      this.androidPermissions.PERMISSION.CAMERA,
+      this.androidPermissions.PERMISSION.MODIFY_AUDIO_SETTINGS,
+      this.androidPermissions.PERMISSION.RECORD_AUDIO,
+    ]);
   }
 }
