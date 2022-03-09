@@ -222,6 +222,9 @@ export class ConferenceRoomComponent implements OnInit {
         this.video2.style.height = 'inherit';
         this.video2.setAttribute('autoplay', '');
         this.video2.srcObject = stream.stream;
+        this.video2.onloadedmetadata = () => {
+          this.video2.play();
+        };
         console.log(this.video2);
         document.getElementById('remote').appendChild(this.video2);
         setTimeout(() => {
