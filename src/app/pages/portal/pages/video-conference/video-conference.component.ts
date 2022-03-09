@@ -49,10 +49,13 @@ export class VideoConferenceComponent implements OnInit {
     });
   }
 
-  async openRoom() {
+  async openRoom(sched: any) {
     const modal = await this.modalController.create({
       component: ConferenceRoomComponent,
       cssClass: 'my-custom-class',
+      componentProps: {
+        schedule: sched,
+      },
     });
     return await modal.present();
   }

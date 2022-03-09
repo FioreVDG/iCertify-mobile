@@ -1,6 +1,6 @@
 <ion-content fullscreen color="light"
   ><ng-container *ngFor="let sched of schedules">
-    <ion-button (click)="openRoom()" color="primary">{{
+    <ion-button (click)="openRoom(sched)" color="primary">{{
       sched.schedule | date: "medium"
     }}</ion-button></ng-container
   ></ion-content
