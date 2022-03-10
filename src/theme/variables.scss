@@ -248,4 +248,9 @@ body[data-theme="dark"] {
   --ion-font-family: "Poppins", sans-serif;
 }
 
+.my-modal {
+  height: 50% !important;
+  width: 80% !important;
+}
+
 @import "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap";
