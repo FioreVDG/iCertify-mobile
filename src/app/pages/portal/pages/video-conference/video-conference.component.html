@@ -16,4 +16,14 @@
     [me]="me"
     (onLeaveMeeting)="leaveMeeting($event)"
   ></app-conference>
+  <ion-fab style="display: fixed; right: 0.7rem; bottom: 5rem">
+    <ion-fab-button>
+      <ion-icon name="document-text"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button color="danger"
+        ><ion-icon name="arrow-undo"></ion-icon
+      ></ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
 </ion-content>

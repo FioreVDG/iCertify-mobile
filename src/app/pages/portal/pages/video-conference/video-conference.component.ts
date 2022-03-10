@@ -222,7 +222,7 @@ export class VideoConferenceComponent implements OnInit {
     this.presentLoading('Leaving...');
     this.api.room.delete(this.currentRoom).subscribe((res: any) => {
       console.log(res);
-      this.modalController.dismiss();
+      this.joinRoom = false;
       this.loadingPresent.dismiss();
     });
   }

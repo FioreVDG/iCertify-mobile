@@ -16,24 +16,31 @@
 </ion-grid>
 <ion-grid>
   <ion-row>
-    <ion-col size="2"></ion-col>
-    <ion-col size="8" class="btn-container">
-      <ion-button
+    <ion-col size="4"></ion-col>
+    <ion-col size="4" class="btn-container">
+      <ion-fab-button
         shape="round"
         color="primary"
+        size="small"
         (click)="toggleVideo()"
-        [fill]="localVideo ? '' : ''"
         ><ion-icon
           [name]="localVideo ? 'videocam' : 'videocam-off'"
-        ></ion-icon></ion-button
-      ><ion-button
+        ></ion-icon></ion-fab-button
+      ><ion-fab-button
         shape="round"
         color="danger"
+        size="small"
         (click)="toggleAudio()"
-        [fill]="localAudio ? '' : ''"
         ><ion-icon [name]="localAudio ? 'mic' : 'mic-off'"></ion-icon
-      ></ion-button>
+      ></ion-fab-button>
     </ion-col>
-    <ion-col size="2"></ion-col>
+    <ion-col
+      size="4"
+      style="display: flex; justify-content: flex-end; align-items: center"
+    >
+      <ion-button size="small" color="warn" (click)="presentAlertConfirm()"
+        ><ion-icon name="arrow-undo"></ion-icon>Leave</ion-button
+      ></ion-col
+    >
   </ion-row>
 </ion-grid>

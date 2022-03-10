@@ -281,7 +281,7 @@ export class ConferenceComponent implements OnInit {
     return `agora_remote-${stream.getId()}`;
   }
 
-  private leave() {
+  leave() {
     this.client.stopLiveStreaming;
     this.client.leave(
       () => {
