@@ -9,6 +9,7 @@ import { AlertController } from '@ionic/angular';
 /* eslint-disable @typescript-eslint/type-annotation-spacing */
 import {
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   OnInit,
@@ -26,6 +27,11 @@ import {
 } from 'ngx-agora';
 import { User } from 'src/app/models/user.interface';
 import { ApiService } from 'src/app/services/api/api.service';
+import {
+  DropEvent,
+  DroppableDirective,
+  ValidateDrop,
+} from 'angular-draggable-droppable';
 
 @Component({
   selector: 'app-conference',
@@ -351,4 +357,20 @@ export class ConferenceComponent implements OnInit {
 
     await alert.present();
   }
+
+  droppedData: string = '';
+
+  @ViewChild(DroppableDirective, { read: ElementRef, static: true })
+  droppableElement: ElementRef;
+
+  onDrop({ dropData }: DropEvent<string>): void {
+    this.droppedData = dropData;
+    console.log(this.droppedData);
+    setTimeout(() => {
+      this.droppedData = '';
+    }, 2000);
+  }
+
+  validateDrop: ValidateDrop = ({ target }) =>
+    this.droppableElement.nativeElement.contains(target as Node);
 }

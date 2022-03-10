@@ -2,6 +2,10 @@
   #agora_local
   id="agora_local"
   [class]="!localVideo ? 'local-hide' : 'local'"
+  mwlDraggable
+  dropData="foo"
+  dragActiveClass="drag-active"
+  [touchStartLongPress]="{ delay: 300, delta: 30 }"
 ></div>
 <ion-grid class="ion-no-padding">
   <ion-row>
