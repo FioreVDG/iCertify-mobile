@@ -1,8 +1,29 @@
-<ion-content fullscreen color="light"
+<ion-content fullscreen color="light" *ngIf="!joinRoom"
   ><ng-container *ngFor="let sched of schedules">
-    <ion-button (click)="openRoom(sched)" color="primary">{{
+    <ion-button (click)="joinMeeting(sched)" color="primary">{{
       sched.schedule | date: "medium"
     }}</ion-button></ng-container
   >
-  <ion-button (click)="openRoom('')" color="primary">TEST</ion-button>
+</ion-content>
+<ion-content fullscreen color="light" *ngIf="joinRoom">
+  <ion-toolbar color="light"
+    ><ion-label *ngIf="currentDocument">{{
+      currentDocument.refCode
+    }}</ion-label></ion-toolbar
+  >
+  <app-conference
+    [channelName]="currentSchedule._id"
+    [me]="me"
+    (onLeaveMeeting)="leaveMeeting($event)"
+  ></app-conference>
+  <ion-fab style="display: fixed; right: 0.7rem; bottom: 5rem">
+    <ion-fab-button>
+      <ion-icon name="document-text"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button color="danger"
+        ><ion-icon name="arrow-undo"></ion-icon
+      ></ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
 </ion-content>

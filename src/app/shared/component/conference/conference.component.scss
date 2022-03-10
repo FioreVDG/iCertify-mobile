@@ -1,0 +1,47 @@
+.local {
+  position: fixed;
+  left: 1rem;
+  bottom: 4rem;
+  width: 35%;
+  height: 30vh;
+  border-radius: 5px;
+  overflow: hidden;
+  z-index: 1;
+  background: #1d1d1d84;
+}
+.local-hide {
+  position: fixed;
+  left: 1rem;
+  bottom: 4rem;
+  width: 35%;
+  height: 30vh;
+  border-radius: 5px;
+  overflow: hidden;
+  background: #1d1d1d;
+  z-index: 99;
+}
+.remote {
+  background: #565656;
+  width: 100%;
+  height: 80vh;
+  z-index: -1;
+  position: relative;
+  p {
+    position: absolute;
+    margin: 0;
+    text-align: center;
+    width: 97.5%;
+    padding: 0.5rem;
+    background: #26184a8b;
+    color: #fff;
+    bottom: 0;
+    z-index: 99;
+    text-transform: uppercase;
+  }
+}
+
+.btn-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

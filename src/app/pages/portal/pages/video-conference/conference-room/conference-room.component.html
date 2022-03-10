@@ -1,21 +1,15 @@
-<ion-content padding color="light">
-  <div #agora_local id="agora_local" class="local">
-    <!-- <p>
-      <b>(ME)</b>
-    </p> -->
-  </div>
+<!-- <ion-content padding color="light">
+  <div #agora_local id="agora_local" class="local"></div>
   <ion-grid class="ion-no-padding">
     <ion-row>
       <ion-col size="12">
         <div class="remote" #remote id="remote">
           <ng-container *ngFor="let call of remoteCalls">
             <div [id]="call.id"></div>
-            <!-- <p>
-              <b>(REMOTE)</b>
-            </p> -->
           </ng-container>
         </div>
       </ion-col>
     </ion-row>
   </ion-grid>
-</ion-content>
+</ion-content> -->
+<app-conference></app-conference>
