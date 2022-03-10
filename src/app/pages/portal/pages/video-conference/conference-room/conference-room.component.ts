@@ -127,7 +127,7 @@ export class ConferenceRoomComponent implements OnInit {
           this.uid = res._id;
           this.client = this.ngxAgoraService.createClient({
             mode: 'rtc',
-            codec: 'h264',
+            codec: 'vp8',
           });
           this.assignClientHandlers();
 
