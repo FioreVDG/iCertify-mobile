@@ -1,3 +1,4 @@
+import { ModalController } from '@ionic/angular';
 /* eslint-disable @angular-eslint/no-output-on-prefix */
 import { AlertController } from '@ionic/angular';
 /* eslint-disable @typescript-eslint/no-unused-expressions */
@@ -11,13 +12,13 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  HostListener,
   Input,
   OnInit,
   Output,
   ViewChild,
 } from '@angular/core';
 import { ToastController, LoadingController } from '@ionic/angular';
-import { Store } from '@ngrx/store';
 import {
   AgoraClient,
   ClientEvent,
@@ -32,6 +33,11 @@ import {
   DroppableDirective,
   ValidateDrop,
 } from 'angular-draggable-droppable';
+const enum Status {
+  OFF = 0,
+  RESIZE = 1,
+  MOVE = 2,
+}
 
 @Component({
   selector: 'app-conference',
@@ -43,6 +49,22 @@ export class ConferenceComponent implements OnInit {
   @Input() me: any;
   @ViewChild('agora_local') videoContainer;
   @ViewChild('remote') remoteVideo;
+
+  public width!: number;
+  public height!: number;
+  public left!: number;
+  public top!: number;
+  @ViewChild('agora_local', { read: ElementRef }) public box!: ElementRef;
+  private boxPosition!: { left: number; top: number };
+  private containerPos!: {
+    left: number;
+    top: number;
+    right: number;
+    bottom: number;
+  };
+  public mouse!: { x: number; y: number };
+  public status: Status = Status.OFF;
+  private mouseClick!: { x: number; y: number; left: number; top: number };
 
   private video: HTMLVideoElement;
   private video2: HTMLVideoElement;
@@ -82,12 +104,13 @@ export class ConferenceComponent implements OnInit {
     private api: ApiService,
     private toast: ToastController,
     public loadingController: LoadingController,
-    private store: Store<{ user: User }>,
+    public mc: ModalController,
     private alertController: AlertController
   ) {
     this.video = document.createElement('video');
     this.video.style.width = '100%';
     this.video.style.height = '100%';
+    this.video.style.transform = 'rotateY(180deg)';
     this.video.setAttribute('autoplay', '');
     console.log(this.video);
   }
@@ -95,6 +118,68 @@ export class ConferenceComponent implements OnInit {
   ngOnInit() {
     document.getElementById('agora_local').appendChild(this.video);
     this.initWebRTC();
+
+    // console.log(this.box.nativeElement);
+  }
+
+  ngAfterViewInit() {
+    // this.loadBox();
+    this.loadContainer();
+  }
+
+  private loadContainer() {
+    const left = this.boxPosition.left - this.left;
+    const top = this.boxPosition.top - this.top;
+    const right = left + 600;
+    const bottom = top + 450;
+    this.containerPos = { left, top, right, bottom };
+  }
+
+  private loadBox() {
+    const { left, top } = this.box.nativeElement.getBoundingClientRect();
+    this.boxPosition = { left, top };
+  }
+  setStatus(event: MouseEvent, status: number) {
+    console.log(event);
+    if (status === 1) event.stopPropagation();
+    else if (status === 2)
+      this.mouseClick = {
+        x: event.clientX,
+        y: event.clientY,
+        left: this.left,
+        top: this.top,
+      };
+    else this.loadBox();
+    this.status = status;
+  }
+
+  @HostListener('window:mousemove', ['$event'])
+  onMouseMove(event: MouseEvent) {
+    this.mouse = { x: event.clientX, y: event.clientY };
+
+    // if (this.status === Status.RESIZE) this.resize();
+    // else
+    if (this.status === Status.MOVE) this.move();
+  }
+
+  private move() {
+    if (this.moveCondMeet()) {
+      this.left = this.mouseClick.left + (this.mouse.x - this.mouseClick.x);
+      this.top = this.mouseClick.top + (this.mouse.y - this.mouseClick.y);
+    }
+  }
+
+  private moveCondMeet() {
+    const offsetLeft = this.mouseClick.x - this.boxPosition.left;
+    const offsetRight = this.width - offsetLeft;
+    const offsetTop = this.mouseClick.y - this.boxPosition.top;
+    const offsetBottom = this.height - offsetTop;
+    return (
+      this.mouse.x > this.containerPos.left + offsetLeft &&
+      this.mouse.x < this.containerPos.right - offsetRight &&
+      this.mouse.y > this.containerPos.top + offsetTop &&
+      this.mouse.y < this.containerPos.bottom - offsetBottom
+    );
   }
 
   // ionViewDidEnter() {
@@ -109,10 +194,15 @@ export class ConferenceComponent implements OnInit {
     };
 
     const handleSuccess = (stream: MediaStream) => {
+      // this.localStream.muteVideo();
       (<any>window).stream = stream;
       this.video.srcObject = stream;
+      // this.video.style.display = 'none';
       this.tempSrc = stream;
-      this.startConference();
+      setTimeout(() => {
+        // this.localStream.unmuteVideo();
+        this.startConference();
+      }, 500);
     };
 
     const handleError = (error: any) => {
@@ -225,6 +315,7 @@ export class ConferenceComponent implements OnInit {
         this.video2 = document.createElement('video');
         this.video2.style.width = 'inherit';
         this.video2.style.height = 'inherit';
+        this.video.style.transform = 'rotateY(180deg)';
         this.video2.setAttribute('autoplay', '');
         this.video2.srcObject = stream.stream;
         this.video2.onloadedmetadata = () => {
@@ -316,6 +407,7 @@ export class ConferenceComponent implements OnInit {
     if (this.localVideo) {
       this.localStream.muteVideo();
       this.video.srcObject = null;
+      this.video.style.display = 'none';
     } else {
       this.localStream.unmuteVideo();
       this.video.srcObject = this.tempSrc;

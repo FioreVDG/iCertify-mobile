@@ -1,0 +1,16 @@
+<ion-grid class="main-wrapper">
+  <ion-row>
+    <ion-col size="12" class="main-wrapper">
+      <ion-icon
+        [color]="success ? 'success' : 'danger'"
+        [name]="success ? 'checkmark-circle' : 'close-circle'"
+      ></ion-icon>
+      <p>{{ message }}</p>
+      <ion-button
+        [color]="success ? 'success' : 'danger'"
+        (click)="success ? modal.dismiss(true) : modal.dismiss()"
+        >{{ button }}</ion-button
+      >
+    </ion-col>
+  </ion-row>
+</ion-grid>

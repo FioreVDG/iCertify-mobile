@@ -1,0 +1,24 @@
+.img-content {
+  height: 75vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img {
+    max-height: 100%;
+    max-width: 100%;
+  }
+}
+p {
+  margin-bottom: 0;
+  margin-top: 0;
+  font-size: 14px;
+}
+.back-drop {
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.232);
+  position: absolute;
+  top: 0;
+  left: 0;
+}

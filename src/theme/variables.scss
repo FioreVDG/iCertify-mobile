@@ -72,7 +72,7 @@
   --ion-color-medium-tint: #9d9fa6;
 
   /** light **/
-  --ion-color-light: #f4f5f8;
+  --ion-color-light: #edeff2;
   --ion-color-light-rgb: 244, 245, 248;
   --ion-color-light-contrast: #000000;
   --ion-color-light-contrast-rgb: 0, 0, 0;
@@ -249,8 +249,36 @@ body[data-theme="dark"] {
 }
 
 .my-modal {
-  height: 50% !important;
-  width: 80% !important;
+  height: "auto" !important;
+  width: 85% !important;
+  // background-color: #26184a;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  backdrop-filter: blur(2px);
+  // ion-backdrop {
+  //   --backdrop-opacity: 1;
+  // }
+  // ion-modal {
+  //   ion-backdrop {
+  //     visibility: visible;
+  //     backdrop-filter: 1;
+  //   }
+  // }
+}
+
+.alert-radio-label.sc-ion-alert-md {
+  padding-left: 52px;
+  padding-right: 26px;
+  padding-top: 13px;
+  padding-bottom: 13px;
+  -ms-flex: 1;
+  flex: 1;
+  color: var(--ion-color-step-850, #262626);
+  font-size: 14px;
+  text-overflow: ellipsis;
+  white-space: pre-line;
+  overflow: hidden;
 }
 
 @import "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap";

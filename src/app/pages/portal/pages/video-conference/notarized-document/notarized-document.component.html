@@ -1,0 +1,68 @@
+<ion-content fullscreen>
+  <div *ngIf="backdropView" class="back-drop"></div>
+  <ion-grid *ngIf="!backdropView">
+    <ion-row>
+      <ion-col size="12" *ngIf="type === 'Notarized'">
+        <div class="img-content">
+          <img [src]="screenshot" />
+        </div>
+        <p>
+          QC Indigent:
+          <b
+            >{{ document.sender.firstName }}
+            {{ document.sender.middleName }}
+            {{ document.sender.lastName }}
+            {{ document.sender.suffix }}</b
+          >
+        </p>
+        <p>
+          Document Ref Code: <b>{{ document.refCode }}</b>
+        </p>
+      </ion-col>
+      <ion-col size="12" *ngIf="type === 'Unnotarized'">
+        <ion-item>
+          <ion-label>Remarks</ion-label>
+          <ion-select required [(ngModel)]="remark" placeholder="Select One">
+            <ion-select-option
+              *ngFor="let remark of remarksArr"
+              [value]="remark"
+              >{{ remark }}</ion-select-option
+            >
+          </ion-select>
+        </ion-item>
+        <ion-item *ngIf="remark === 'Others'">
+          <ion-label position="floating">Please Specify</ion-label>
+          <ion-input [(ngModel)]="others"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+<ion-footer *ngIf="!backdropView">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6"
+        ><ion-button expand="block" color="danger" (click)="mc.dismiss()"
+          >Cancel</ion-button
+        ></ion-col
+      >
+      <ion-col size="6"
+        ><ion-button
+          *ngIf="type === 'Notarized'"
+          (click)="presentAlertConfirm(document)"
+          expand="block"
+          color="primary"
+          >Notarize</ion-button
+        >
+        <ion-button
+          *ngIf="type === 'Unnotarized'"
+          [disabled]="!remark"
+          expand="block"
+          color="primary"
+          (click)="presentAlertConfirm(document)"
+          >Unnotarize</ion-button
+        >
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

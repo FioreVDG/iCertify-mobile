@@ -1,0 +1,136 @@
+<ion-header class="header">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <ion-title color="light" class="ion-text-center"
+          >Step <b>{{ step }}</b> of 2</ion-title
+        >
+        <p style="text-align: center; margin: 0; font-size: 10px; color: #fff">
+          {{ step === 1 ? "Review Details" : "Review Document" }}
+        </p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid *ngIf="step === 1">
+    <ion-row>
+      <ion-col size="12" class="main-wrapper">
+        <div class="profile-wrapper">
+          <img [src]="details.gender === 'Male' ? male : female" />
+        </div>
+        <p style="color: #fff">
+          {{ details.firstName }} {{ details?.middleName }}
+          {{ details.lastName }} {{ details?.suffix }}
+        </p>
+        <small style="color: #fff">{{ details.gender }}</small>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-header>
+<ion-content color="light">
+  <ion-grid *ngIf="step === 1" style="padding: 0.5rem; padding-bottom: 0">
+    <ion-card style="border-radius: 0; box-shadow: none">
+      <ion-row>
+        <ion-col class="ion-no-padding icon-wrap" size="2">
+          <ion-icon name="location"></ion-icon>
+        </ion-col>
+        <ion-col class="desc-wrap" size="10">
+          <p class="desc">
+            {{ details?.address1 }} {{ details?.address2 }}
+            {{ details.address.barangay.brgyDesc }}
+            {{ details.address.cityMun.citymunDesc }}
+            {{ details.address.province.provDesc }}
+            {{ details.address.region.regDesc }}
+          </p>
+        </ion-col>
+      </ion-row></ion-card
+    >
+    <ion-card style="border-radius: 0; box-shadow: none">
+      <ion-row>
+        <ion-col class="ion-no-padding icon-wrap" size="2">
+          <ion-icon name="call"></ion-icon>
+        </ion-col>
+        <ion-col class="desc-wrap" size="10">
+          <p class="desc">(+63) {{ details?.mobileNumber }}</p>
+        </ion-col>
+      </ion-row></ion-card
+    >
+    <ion-card style="border-radius: 0; box-shadow: none">
+      <ion-row>
+        <ion-col class="ion-no-padding icon-wrap" size="2">
+          <ion-icon name="mail"></ion-icon>
+        </ion-col>
+        <ion-col class="desc-wrap" size="10">
+          <p class="desc">
+            {{ details?.email || "N/A" }}
+          </p>
+        </ion-col>
+      </ion-row></ion-card
+    >
+  </ion-grid>
+  <ion-grid *ngIf="step === 1">
+    <ion-title
+      style="
+        color: #565656;
+        padding-left: 0.8rem;
+        font-size: 15px;
+        text-transform: uppercase;
+      "
+      >Images</ion-title
+    >
+    <ion-row>
+      <ion-col size="12">
+        <ion-card class="img-card" *ngFor="let img of _images">
+          <img [src]="img?.url" alt="" />
+          <p>{{ img.label }}</p></ion-card
+        >
+      </ion-col>
+      <ion-col size="12">
+        <ion-card class="img-card">
+          <video
+            *ngIf="video?.vidURL !== undefined"
+            style="max-width: 100%; max-height: 100%"
+            controls
+          >
+            <source [src]="video?.vidURL" type="video/mp4" />
+          </video>
+          <p>Video of signing</p>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid *ngIf="step === 2">
+    <ion-row>
+      <ion-col size="12">
+        <pdf-viewer
+          *ngIf="documentDisplay"
+          [src]="documentDisplay"
+          [render-text]="true"
+          [original-size]="false"
+          style="width: inherit; height: 500px"
+        ></pdf-viewer>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+<ion-footer>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6">
+        <ion-button
+          expand="full"
+          color="danger"
+          (click)="step === 1 ? mc.dismiss() : (step = step - 1)"
+          >Back</ion-button
+        >
+      </ion-col>
+      <ion-col size="6">
+        <ion-button
+          expand="full"
+          color="primary"
+          (click)="step === 1 ? (step = step + 1) : mc.dismiss(true)"
+          >Next</ion-button
+        >
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

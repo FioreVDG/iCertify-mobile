@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { ConferenceRoomComponent } from './conference-room.component';
+import { ConferenceSettingsComponent } from './conference-settings.component';
 
-describe('ConferenceRoomComponent', () => {
-  let component: ConferenceRoomComponent;
-  let fixture: ComponentFixture<ConferenceRoomComponent>;
+describe('ConferenceSettingsComponent', () => {
+  let component: ConferenceSettingsComponent;
+  let fixture: ComponentFixture<ConferenceSettingsComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ConferenceRoomComponent ],
+      declarations: [ ConferenceSettingsComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ConferenceRoomComponent);
+    fixture = TestBed.createComponent(ConferenceSettingsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

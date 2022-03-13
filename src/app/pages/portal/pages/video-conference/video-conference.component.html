@@ -6,24 +6,68 @@
   >
 </ion-content>
 <ion-content fullscreen color="light" *ngIf="joinRoom">
-  <ion-toolbar color="light"
-    ><ion-label *ngIf="currentDocument">{{
-      currentDocument.refCode
-    }}</ion-label></ion-toolbar
-  >
+  <ion-grid>
+    <ion-row>
+      <ion-col class="flex-center ion-no-padding" size="10"
+        ><ion-label *ngIf="currentDocument">{{
+          currentDocument.refCode
+        }}</ion-label></ion-col
+      >
+      <ion-col class="flex-center ion-no-padding" size="2">
+        <ion-button
+          [disabled]="checkDocumentStatus()"
+          (click)="openUserDetails()"
+          color="light"
+        >
+          <ion-icon name="chevron-forward"></ion-icon>
+        </ion-button>
+        <p class="sub">
+          {{ currentDocument?.queue }} of {{ transactionCount }}
+        </p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
   <app-conference
+    id="toScreenShot"
     [channelName]="currentSchedule._id"
     [me]="me"
     (onLeaveMeeting)="leaveMeeting($event)"
   ></app-conference>
-  <ion-fab style="display: fixed; right: 0.7rem; bottom: 5rem">
+  <ion-fab
+    style="display: fixed; right: 0.7rem; bottom: 5rem"
+    *ngIf="checkDocumentStatus2()"
+  >
     <ion-fab-button>
       <ion-icon name="document-text"></ion-icon>
     </ion-fab-button>
     <ion-fab-list side="top">
-      <ion-fab-button color="danger"
-        ><ion-icon name="arrow-undo"></ion-icon
-      ></ion-fab-button>
+      <ion-fab-button
+        (click)="takeScreenshot()"
+        color="primary"
+        label="Mark as notarized"
+        ><ion-icon name="thumbs-up"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button
+        color="danger"
+        (click)="notarizeDocument('Unnotarized')"
+        label="Mark as Unnotarized"
+        ><ion-icon name="thumbs-down"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button color="" (click)="skipDocument()" label="Skip"
+        ><ion-icon name="reload"></ion-icon>
+      </ion-fab-button>
     </ion-fab-list>
   </ion-fab>
+  <ion-grid>
+    <ion-row>
+      <ion-col
+        ><ion-button
+          expand="full"
+          color="primary"
+          (click)="openUserDetails('view')"
+          >View user and document details</ion-button
+        ></ion-col
+      >
+    </ion-row>
+  </ion-grid>
 </ion-content>

@@ -1,40 +1,52 @@
-<div
-  #agora_local
-  id="agora_local"
-  [class]="!localVideo ? 'local-hide' : 'local'"
-  mwlDraggable
-  dropData="foo"
-  dragActiveClass="drag-active"
-  [touchStartLongPress]="{ delay: 300, delta: 30 }"
-></div>
-<ion-grid class="ion-no-padding">
-  <ion-row>
-    <ion-col size="12">
-      <div class="remote" #remote id="remote">
-        <ng-container *ngFor="let call of remoteCalls">
-          <div [id]="call.id"></div>
-        </ng-container>
-      </div>
-    </ion-col>
-  </ion-row>
-</ion-grid>
-<ion-grid>
+<div id="container" class="container">
+  <div
+    #agora_local
+    id="agora_local"
+    [class]="!localVideo ? 'local-hide' : 'local'"
+    [style.width.px]="width"
+    [style.height.px]="height"
+    [style.transform]="'translate3d(' + left + 'px,' + top + 'px,' + '0px)'"
+    (mousedown)="setStatus($event, 2)"
+    (window:mouseup)="setStatus($event, 0)"
+  ></div>
+  <ion-grid class="ion-no-padding">
+    <ion-row>
+      <ion-col size="12">
+        <div class="remote" #remote id="remote">
+          <ng-container *ngFor="let call of remoteCalls">
+            <div [id]="call.id"></div>
+          </ng-container>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>
+<ion-icon
+  name="settings"
+  id="open-settings"
+  style="position: absolute; top: 5.2rem; right: 1rem; font-size: 25px"
+></ion-icon>
+<ion-popover trigger="open-settings" [dismissOnSelect]="true">
+  <ng-template>
+    <ion-content>
+      <ion-list>
+        <ion-item lines="none" (click)="presentAlertConfirm()" [button]="true">
+          <ion-icon slot="start" name="arrow-undo"></ion-icon
+          ><ion-label>Leave</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ng-template>
+</ion-popover>
+<!-- <ion-grid>
   <ion-row>
     <ion-col size="4"></ion-col>
     <ion-col size="4" class="btn-container">
-      <ion-fab-button
-        shape="round"
-        color="primary"
-        size="small"
-        (click)="toggleVideo()"
+      <ion-fab-button shape="round" color="primary" (click)="toggleVideo()"
         ><ion-icon
           [name]="localVideo ? 'videocam' : 'videocam-off'"
         ></ion-icon></ion-fab-button
-      ><ion-fab-button
-        shape="round"
-        color="danger"
-        size="small"
-        (click)="toggleAudio()"
+      ><ion-fab-button shape="round" color="danger" (click)="toggleAudio()"
         ><ion-icon [name]="localAudio ? 'mic' : 'mic-off'"></ion-icon
       ></ion-fab-button>
     </ion-col>
@@ -47,4 +59,4 @@
       ></ion-col
     >
   </ion-row>
-</ion-grid>
+</ion-grid> -->
