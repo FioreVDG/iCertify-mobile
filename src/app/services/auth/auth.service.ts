@@ -42,4 +42,8 @@ export class AuthService {
   me() {
     return this.http.get(this.url + '/auth/me', this.getHeaders());
   }
+
+  logout() {
+    return this.http.get(this.url + '/auth/logout', this.getHeaders());
+  }
 }

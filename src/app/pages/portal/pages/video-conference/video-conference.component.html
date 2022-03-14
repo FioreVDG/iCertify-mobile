@@ -119,37 +119,6 @@
       </ion-col>
     </ion-row>
   </ion-grid> -->
-  <app-conference
-    id="toScreenShot"
-    [channelName]="currentSchedule._id"
-    [me]="me"
-    (onLeaveMeeting)="leaveMeeting($event)"
-  ></app-conference>
-  <ion-fab
-    style="display: fixed; right: 0.7rem; bottom: 5rem"
-    *ngIf="checkDocumentStatus2()"
-  >
-    <ion-fab-button>
-      <ion-icon name="document-text"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-list side="top">
-      <ion-fab-button
-        (click)="takeScreenshot()"
-        color="primary"
-        label="Mark as notarized"
-        ><ion-icon name="thumbs-up"></ion-icon>
-      </ion-fab-button>
-      <ion-fab-button
-        color="danger"
-        (click)="notarizeDocument('Unnotarized')"
-        label="Mark as Unnotarized"
-        ><ion-icon name="thumbs-down"></ion-icon>
-      </ion-fab-button>
-      <ion-fab-button color="" (click)="skipDocument()" label="Skip"
-        ><ion-icon name="reload"></ion-icon>
-      </ion-fab-button>
-    </ion-fab-list>
-  </ion-fab>
   <ion-grid>
     <ion-row>
       <ion-col
@@ -173,4 +142,35 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+  <app-conference
+    id="toScreenShot"
+    [channelName]="currentSchedule._id"
+    [me]="me"
+    (onLeaveMeeting)="leaveMeeting($event)"
+  ></app-conference>
+  <ion-fab
+    style="display: fixed; right: 0.7rem; bottom: 2rem"
+    *ngIf="checkDocumentStatus2()"
+  >
+    <ion-fab-button>
+      <ion-icon name="document-text"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button
+        (click)="takeScreenshot()"
+        color="primary"
+        label="Mark as notarized"
+        ><ion-icon name="thumbs-up"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button
+        color="danger"
+        (click)="notarizeDocument('Unnotarized')"
+        label="Mark as Unnotarized"
+        ><ion-icon name="thumbs-down"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button color="" (click)="skipDocument()" label="Skip"
+        ><ion-icon name="reload"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
 </ion-content>
