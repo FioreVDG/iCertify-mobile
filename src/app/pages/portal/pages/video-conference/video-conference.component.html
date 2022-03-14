@@ -1,9 +1,51 @@
+<ion-header *ngIf="!joinRoom">
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-button (click)="modalController.dismiss()">
+        <ion-icon color="light" slot="icon-only" name="chevron-back"></ion-icon>
+      </ion-button>
+      <p class="date-up" slot="end" color="light">
+        {{ today | date: "MMMM d, y, EEE" }}
+      </p>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar color="tertiary" class="ion-no-padding"
+    ><ion-grid class="upper-date ion-no-padding">
+      <ion-row>
+        <ion-col size="12">
+          <div class="date-container">
+            <h3>{{ today.getDate() }}</h3>
+          </div>
+          <p>{{ today | date: "EEE" }}</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid></ion-toolbar
+  >
+</ion-header>
 <ion-content fullscreen color="light" *ngIf="!joinRoom"
   ><ng-container *ngFor="let sched of schedules">
-    <ion-button (click)="joinMeeting(sched)" color="primary">{{
-      sched.schedule | date: "medium"
-    }}</ion-button></ng-container
-  >
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-subtitle class="ion-text-center"
+                ><b>{{ sched.schedule | date: "medium" }}</b></ion-card-subtitle
+              >
+            </ion-card-header>
+            <ion-card-content
+              ><ion-button
+                expand="full"
+                (click)="joinMeeting(sched)"
+                color="primary"
+                >Enter room</ion-button
+              ></ion-card-content
+            >
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ng-container>
 </ion-content>
 <ion-content fullscreen color="light" *ngIf="joinRoom">
   <ion-grid>

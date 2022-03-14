@@ -27,3 +27,46 @@ ion-fab-button[label]::after {
   justify-content: center;
   flex-direction: column;
 }
+.upper-date {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  .date-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 3.5rem;
+    width: 3.5rem;
+    border-radius: 50%;
+    margin-bottom: 0.5rem;
+    // background-color: #26184a;
+    // background-image: linear-gradient(
+    //   90deg,
+    //   rgb(44, 14, 90) 18%,
+    //   rgb(95, 47, 140) 100%
+    // );
+    background: #fff;
+    h3 {
+      color: #26184a;
+      margin: 0;
+      text-align: center;
+      font-size: 25px;
+      font-weight: 700;
+    }
+  }
+  p {
+    margin-bottom: 0.3rem;
+    margin-top: 0;
+    color: #fff;
+    text-align: center;
+  }
+}
+
+.date-up {
+  margin: 0;
+  color: #fff;
+  font-size: 13px;
+}

@@ -72,9 +72,7 @@ export class PortalComponent implements OnInit {
   checkSession() {
     let csurf_token = localStorage.getItem('SESSION_CSURF_TOKEN');
     let session_token = localStorage.getItem('SESSION_AUTH');
-
     console.log(csurf_token, session_token);
-
     if (csurf_token == null || session_token == null) {
       this.loading = true;
       this.presentToast('Session Timeout. Log in to continue');

@@ -23,6 +23,7 @@ import html2canvas from 'html2canvas';
   styleUrls: ['./video-conference.component.scss'],
 })
 export class VideoConferenceComponent implements OnInit {
+  today: Date = new Date();
   me: any;
   schedules: any;
   currentSchedule: any;
