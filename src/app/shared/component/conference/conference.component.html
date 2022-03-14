@@ -8,7 +8,22 @@
     [style.transform]="'translate3d(' + left + 'px,' + top + 'px,' + '0px)'"
     (mousedown)="setStatus($event, 2)"
     (window:mouseup)="setStatus($event, 0)"
-  ></div>
+  >
+    <div class="conference-btn">
+      <ion-fab class="mic-btn">
+        <ion-fab-button (click)="toggleAudio()" size="small" color="light">
+          <ion-icon [name]="localAudio ? 'mic' : 'mic-off'"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+      <ion-fab class="vid-btn">
+        <ion-fab-button (click)="toggleVideo()" size="small" color="light">
+          <ion-icon
+            [name]="localVideo ? 'videocam' : 'videocam-off'"
+          ></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+    </div>
+  </div>
   <ion-grid class="ion-no-padding">
     <ion-row>
       <ion-col size="12">
@@ -21,7 +36,7 @@
     </ion-row>
   </ion-grid>
 </div>
-<ion-icon
+<!-- <ion-icon
   name="settings"
   id="open-settings"
   style="position: absolute; top: 5.2rem; right: 1rem; font-size: 25px"
@@ -37,7 +52,7 @@
       </ion-list>
     </ion-content>
   </ng-template>
-</ion-popover>
+</ion-popover> -->
 <!-- <ion-grid>
   <ion-row>
     <ion-col size="4"></ion-col>
