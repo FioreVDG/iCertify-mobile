@@ -153,6 +153,7 @@ export class VideoConferenceComponent implements OnInit {
 
   ionViewDidEnter() {
     this.loading = true;
+    this.presentLoading('Loading conferences...');
     this.auth.me().subscribe((res: any) => {
       console.log(res);
       if (res) {
@@ -176,10 +177,16 @@ export class VideoConferenceComponent implements OnInit {
         },
       ],
     };
-    this.api.conference.getScheduled(query).subscribe((res: any) => {
-      console.log(res);
-      this.schedules = res.env.schedules;
-    });
+    this.api.conference.getScheduled(query).subscribe(
+      (res: any) => {
+        console.log(res);
+        this.schedules = res.env.schedules;
+        this.loadingPresent.dismiss();
+      },
+      (error) => {
+        this.loadingPresent.dismiss();
+      }
+    );
   }
 
   checkRemainingDocuments() {

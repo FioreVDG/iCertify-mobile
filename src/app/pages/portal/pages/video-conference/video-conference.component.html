@@ -37,13 +37,18 @@
               <!-- TODO
               lagay Batch ref code
               doc refcode with schedule -->
+
               <ion-list *ngFor="let folder of sched._folderIds" lines="full">
                 <ion-item-group>
                   <ion-item-divider>
                     <ion-label>{{ folder.folderName }}</ion-label>
                   </ion-item-divider>
+
                   <ion-item *ngFor="let trans of folder._transactions">
-                    <ion-label>{{ trans.refCode }}</ion-label>
+                    <h3>
+                      {{ trans.refCode }}
+                      ({{ trans._documents[0].schedule | date: "shortTime" }})
+                    </h3>
                   </ion-item>
                 </ion-item-group>
               </ion-list>
