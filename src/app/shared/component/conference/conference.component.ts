@@ -394,6 +394,7 @@ export class ConferenceComponent implements OnInit {
   }
 
   toggleAudio() {
+    console.log('MIC');
     if (this.localAudio) {
       this.localStream.muteAudio();
     } else {
@@ -404,6 +405,7 @@ export class ConferenceComponent implements OnInit {
   }
 
   toggleVideo() {
+    console.log('VIDEO');
     if (this.localVideo) {
       this.localStream.muteVideo();
       this.video.srcObject = null;

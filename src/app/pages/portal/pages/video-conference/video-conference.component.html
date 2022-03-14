@@ -66,8 +66,36 @@
     </ion-grid>
   </ng-container>
 </ion-content>
+
 <ion-content fullscreen color="light" *ngIf="joinRoom">
-  <ion-grid>
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-button
+        class="btn-border"
+        color="light"
+        (click)="conferenceComp.presentAlertConfirm()"
+      >
+        <ion-icon slot="start" name="arrow-undo"></ion-icon>
+        Leave meeting
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button
+        class="btn-border"
+        [disabled]="checkDocumentStatus()"
+        (click)="openUserDetails()"
+        color="light"
+      >
+        <p>{{ currentDocument?.queue }} of {{ transactionCount }}</p>
+        <ion-icon name="chevron-forward"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title color="light" style="text-align: center" *ngIf="currentDocument">
+      {{ currentDocument.refCode }}</ion-title
+    >
+  </ion-toolbar>
+
+  <!-- <ion-grid>
     <ion-row>
       <ion-col class="flex-center ion-no-padding" size="10"
         ><ion-label *ngIf="currentDocument">{{
@@ -87,7 +115,7 @@
         </p>
       </ion-col>
     </ion-row>
-  </ion-grid>
+  </ion-grid> -->
   <app-conference
     id="toScreenShot"
     [channelName]="currentSchedule._id"

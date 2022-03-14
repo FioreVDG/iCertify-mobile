@@ -70,3 +70,10 @@ ion-fab-button[label]::after {
   color: #fff;
   font-size: 13px;
 }
+
+.btn-border {
+  color: #fff;
+  border: 3px;
+  border-style: solid;
+  border-radius: 10px;
+}

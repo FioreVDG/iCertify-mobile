@@ -1,6 +1,7 @@
 import { DropboxService } from './../../../../../services/dropbox/dropbox.service';
 import { ModalController } from '@ionic/angular';
 import { Component, Input, OnInit } from '@angular/core';
+import { LoadingController, AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-info-view',
@@ -12,6 +13,7 @@ export class InfoViewComponent implements OnInit {
   @Input() document: any;
   @Input() video: any;
   documentDisplay: any;
+  loadingPresent: any;
   _images: any = [
     {
       label: '1st Valid Government ID',
@@ -29,7 +31,11 @@ export class InfoViewComponent implements OnInit {
   step = 1;
   male = '../../../../../../assets/images/male.png';
   female = '../../../../../../assets/images/female.jpg';
-  constructor(public mc: ModalController, private dbx: DropboxService) {}
+  constructor(
+    public mc: ModalController,
+    private dbx: DropboxService,
+    private loadingController: LoadingController
+  ) {}
 
   ngOnInit() {
     console.log(this.details);
@@ -41,7 +47,15 @@ export class InfoViewComponent implements OnInit {
     this.getImages();
   }
 
+  async presentLoading(msg: any) {
+    this.loadingPresent = await this.loadingController.create({
+      message: `${msg}`,
+    });
+    await this.loadingPresent.present();
+  }
+
   async getImages() {
+    this.presentLoading('Loading data...');
     this._images.forEach(async (image: any) => {
       if (this.details.images && this.details.images[image.fcname]) {
         image.url = await this.getTempLink(
@@ -63,6 +77,8 @@ export class InfoViewComponent implements OnInit {
       );
       console.log(this.documentDisplay);
     } else delete this.documentDisplay;
+
+    this.loadingPresent.dismiss();
   }
 
   async getTempLink(data: any) {

@@ -12,10 +12,11 @@ import { DropboxService } from './../../../../services/dropbox/dropbox.service';
 import { ApiService } from './../../../../services/api/api.service';
 import { LoadingController, AlertController } from '@ionic/angular';
 import { AuthService } from './../../../../services/auth/auth.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { QueryParams } from 'src/app/models/queryparams.iterface';
 import html2canvas from 'html2canvas';
+import { ConferenceComponent } from 'src/app/shared/component/conference/conference.component';
 
 @Component({
   selector: 'app-video-conference',
@@ -23,6 +24,7 @@ import html2canvas from 'html2canvas';
   styleUrls: ['./video-conference.component.scss'],
 })
 export class VideoConferenceComponent implements OnInit {
+  @ViewChild(ConferenceComponent) conferenceComp!: ConferenceComponent;
   today: Date = new Date();
   me: any;
   schedules: any;
