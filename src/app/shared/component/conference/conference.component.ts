@@ -33,6 +33,7 @@ import {
   DroppableDirective,
   ValidateDrop,
 } from 'angular-draggable-droppable';
+import { DBMeter } from '@ionic-native/db-meter/ngx';
 const enum Status {
   OFF = 0,
   RESIZE = 1,
@@ -45,6 +46,7 @@ const enum Status {
   styleUrls: ['./conference.component.scss'],
 })
 export class ConferenceComponent implements OnInit {
+  @ViewChild('meter') meterRef!: ElementRef;
   @Input() channelName: string = '';
   @Input() me: any;
   @ViewChild('agora_local') videoContainer;
@@ -80,6 +82,8 @@ export class ConferenceComponent implements OnInit {
   public localVideo: boolean = true;
   tempSrc: any;
 
+  soundMeter: any;
+
   @Output() onLeaveMeeting: any = new EventEmitter<any>();
 
   loading: any;
@@ -105,7 +109,8 @@ export class ConferenceComponent implements OnInit {
     private toast: ToastController,
     public loadingController: LoadingController,
     public mc: ModalController,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private dbMeter: DBMeter
   ) {
     this.video = document.createElement('video');
     this.video.style.width = '100%';
@@ -118,7 +123,7 @@ export class ConferenceComponent implements OnInit {
   ngOnInit() {
     document.getElementById('agora_local').appendChild(this.video);
     this.initWebRTC();
-
+    this.initSoundMeter();
     // console.log(this.box.nativeElement);
   }
 
@@ -186,6 +191,30 @@ export class ConferenceComponent implements OnInit {
   //   document.getElementById('agora_local').appendChild(this.video);
   //   this.initWebRTC();
   // }
+
+  initSoundMeter() {
+    this.soundMeter = this.dbMeter.start().subscribe(
+      (instant) => {
+        console.log(instant);
+        this.meterRef && this.localAudio
+          ? (this.meterRef.nativeElement.value = instant)
+          : (this.meterRef.nativeElement.value = 0);
+      },
+      (error) =>
+        console.debug(
+          'navigator.MediaDevices.getUserMedia error: ',
+          error.message,
+          error.name
+        )
+    );
+  }
+  ngOnDestroy(): void {
+    this.soundMeter?.unsubscribe();
+    this.dbMeter.delete().then(
+      () => console.log('Deleted DB Meter instance'),
+      (error) => console.log('Error occurred while deleting DB Meter instance')
+    );
+  }
 
   initWebRTC() {
     const constraints = {

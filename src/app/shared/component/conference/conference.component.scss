@@ -48,9 +48,16 @@
   z-index: 99;
   opacity: 0.5;
   .mic-btn {
-    margin-top: 3rem;
+    margin-left: 3rem;
   }
 }
+meter {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  z-index: 99;
+}
+
 .remote {
   background: #565656;
   width: 100%;
