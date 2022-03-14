@@ -46,6 +46,7 @@ const enum Status {
   styleUrls: ['./conference.component.scss'],
 })
 export class ConferenceComponent implements OnInit {
+  @ViewChild('meter') meterRef!: ElementRef;
   @Input() channelName: string = '';
   @Input() me: any;
   @ViewChild('agora_local') videoContainer;
@@ -80,6 +81,8 @@ export class ConferenceComponent implements OnInit {
   public localAudio: boolean = true;
   public localVideo: boolean = true;
   tempSrc: any;
+
+  soundMeter: any;
 
   @Output() onLeaveMeeting: any = new EventEmitter<any>();
 
@@ -190,12 +193,27 @@ export class ConferenceComponent implements OnInit {
   // }
 
   initSoundMeter() {
-    this.dbMeter
-      .start()
-      .subscribe((data) => console.log('INITIATE DB METER', data));
-    this.dbMeter
-      .isListening()
-      .then((isListening) => console.log('LISTENING TO DB METER', isListening));
+    this.soundMeter = this.dbMeter.start().subscribe(
+      (instant) => {
+        console.log(instant);
+        this.meterRef && this.localAudio
+          ? (this.meterRef.nativeElement.value = instant)
+          : (this.meterRef.nativeElement.value = 0);
+      },
+      (error) =>
+        console.debug(
+          'navigator.MediaDevices.getUserMedia error: ',
+          error.message,
+          error.name
+        )
+    );
+  }
+  ngOnDestroy(): void {
+    this.soundMeter?.unsubscribe();
+    this.dbMeter.delete().then(
+      () => console.log('Deleted DB Meter instance'),
+      (error) => console.log('Error occurred while deleting DB Meter instance')
+    );
   }
 
   initWebRTC() {
