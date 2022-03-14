@@ -33,6 +33,7 @@ import {
   DroppableDirective,
   ValidateDrop,
 } from 'angular-draggable-droppable';
+import { DBMeter } from '@ionic-native/db-meter/ngx';
 const enum Status {
   OFF = 0,
   RESIZE = 1,
@@ -105,7 +106,8 @@ export class ConferenceComponent implements OnInit {
     private toast: ToastController,
     public loadingController: LoadingController,
     public mc: ModalController,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private dbMeter: DBMeter
   ) {
     this.video = document.createElement('video');
     this.video.style.width = '100%';
@@ -118,7 +120,7 @@ export class ConferenceComponent implements OnInit {
   ngOnInit() {
     document.getElementById('agora_local').appendChild(this.video);
     this.initWebRTC();
-
+    this.initSoundMeter();
     // console.log(this.box.nativeElement);
   }
 
@@ -186,6 +188,15 @@ export class ConferenceComponent implements OnInit {
   //   document.getElementById('agora_local').appendChild(this.video);
   //   this.initWebRTC();
   // }
+
+  initSoundMeter() {
+    this.dbMeter
+      .start()
+      .subscribe((data) => console.log('INITIATE DB METER', data));
+    this.dbMeter
+      .isListening()
+      .then((isListening) => console.log('LISTENING TO DB METER', isListening));
+  }
 
   initWebRTC() {
     const constraints = {
