@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
           console.log(res.env.user);
           localStorage.setItem('SESSION_TOKEN', res.csrf_token);
           localStorage.setItem('SESSION_AUTH', res.token);
-          this.router.navigate(['/portal/dashboard']);
+          this.router.navigate(['/portal/video-conference']);
           this.isLoggingIn = false;
         }
       },

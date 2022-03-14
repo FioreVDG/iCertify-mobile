@@ -1,9 +1,12 @@
 <ion-header *ngIf="!joinRoom">
   <ion-toolbar color="tertiary">
     <ion-buttons slot="start">
-      <ion-button [routerLink]="['/portal/dashboard']">
+      <ion-buttons>
+        <ion-menu-button color="light"></ion-menu-button>
+      </ion-buttons>
+      <!-- <ion-button [routerLink]="['/portal/dashboard']">
         <ion-icon color="light" slot="icon-only" name="chevron-back"></ion-icon>
-      </ion-button>
+      </ion-button> -->
       <p class="date-up" slot="end" color="light">
         {{ today | date: "MMMM d, y, EEE" }}
       </p>
@@ -90,9 +93,9 @@
         <ion-icon name="chevron-forward"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title color="light" style="text-align: center" *ngIf="currentDocument">
+    <!-- <ion-title color="light" style="text-align: center" *ngIf="currentDocument">
       {{ currentDocument.refCode }}</ion-title
-    >
+    > -->
   </ion-toolbar>
 
   <!-- <ion-grid>
@@ -157,6 +160,17 @@
           >View user and document details</ion-button
         ></ion-col
       >
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-title
+          color="primary"
+          style="text-align: center"
+          *ngIf="currentDocument"
+        >
+          {{ currentDocument.refCode }}</ion-title
+        >
+      </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>
