@@ -18,12 +18,12 @@ export class PortalComponent implements OnInit {
   me: any;
   menuList = [
     {
-      label: 'Dashboard',
-      router: '/portal/dashboard',
+      label: 'Video Conference',
+      router: '/portal/video-conference',
       onSelect: () => {
         this.onMenuClick();
       },
-      icon: 'home-outline',
+      icon: 'videocam-outline',
     },
   ];
   isLoggingOut = false;
