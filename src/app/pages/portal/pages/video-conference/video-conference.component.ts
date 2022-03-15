@@ -512,39 +512,53 @@ export class VideoConferenceComponent implements OnInit {
     console.log(event);
     this.presentLoading('Leaving...');
 
-    let findFinished: any = this.transactions.filter((el: any) => {
-      return (el.transactionStatus = 'Pending');
-    });
+    let query: any = {
+      find: [
+        {
+          field: '_notaryId',
+          operator: '=',
+          value: this.me._notaryId,
+        },
+      ],
+    };
+    this.api.conference.getScheduled(query).subscribe((res: any) => {
+      let getCurrentSchedTemp: any = res.env.schedules.find(
+        (o: any) => o._id === this.currentSchedule._id
+      );
+      console.log(getCurrentSchedTemp);
 
-    console.log(findFinished);
-    setTimeout(() => {
-      if (findFinished.length) {
-        this.loadingPresent.dismiss();
-        this.joinRoom = false;
-      } else {
-        this.api.room.delete(this.currentRoom).subscribe(
-          (res: any) => {
-            console.log(res);
-            this.joinRoom = false;
-            this.loadingPresent.dismiss();
-            // this.getParticipants();
-          },
-          (err) => {
-            let componentProps = {
-              success: false,
-              message: err.error.message || `Server Error Please try again`,
-              button: 'Okay',
-            };
-            this.loadingPresent.dismiss();
-            this.presentModal(
-              ActionResultComponent,
-              'my-modal',
-              componentProps,
-              ''
-            );
-          }
-        );
-      }
-    }, 1000);
+      setTimeout(() => {
+        if (getCurrentSchedTemp?.conferenceStatus === 'Pending') {
+          console.log('HINDI NADELETE TANGA');
+          this.joinRoom = false;
+          this.loadingPresent.dismiss();
+          this.getParticipants();
+        } else {
+          this.api.room.delete(this.currentRoom).subscribe(
+            (res: any) => {
+              console.log(res);
+              this.joinRoom = false;
+              this.loadingPresent.dismiss();
+              this.getParticipants();
+              console.log('NADELETE NA POTANGINA');
+            },
+            (err) => {
+              let componentProps = {
+                success: false,
+                message: err.error.message || `Server Error Please try again`,
+                button: 'Okay',
+              };
+              this.loadingPresent.dismiss();
+              this.presentModal(
+                ActionResultComponent,
+                'my-modal',
+                componentProps,
+                ''
+              );
+            }
+          );
+        }
+      }, 1000);
+    });
   }
 }
