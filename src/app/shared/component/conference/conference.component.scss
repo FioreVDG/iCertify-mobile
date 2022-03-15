@@ -13,7 +13,7 @@
 .local:hover {
   position: fixed;
   left: 1rem;
-  bottom: 5rem;
+  bottom: 1rem;
   width: 35%;
   height: 30vh;
   border-radius: 5px;
@@ -23,7 +23,7 @@
 .local-hide {
   position: fixed;
   left: 1rem;
-  bottom: 5rem;
+  bottom: 1rem;
   width: 35%;
   height: 30vh;
   border-radius: 5px;
@@ -34,7 +34,7 @@
 .local-hide:hover {
   position: fixed;
   left: 1rem;
-  bottom: 5rem;
+  bottom: 1rem;
   width: 35%;
   height: 30vh;
   border-radius: 5px;
@@ -53,8 +53,8 @@
 }
 meter {
   position: absolute;
-  bottom: 0;
-  right: 0;
+  bottom: 0.5rem;
+  right: 0.5rem;
   z-index: 99;
 }
 
