@@ -517,32 +517,34 @@ export class VideoConferenceComponent implements OnInit {
     });
 
     console.log(findFinished);
-    if (findFinished.length) {
-      this.loadingPresent.dismiss();
-      this.joinRoom = false;
-    } else {
-      this.api.room.delete(this.currentRoom).subscribe(
-        (res: any) => {
-          console.log(res);
-          this.joinRoom = false;
-          this.loadingPresent.dismiss();
-          // this.getParticipants();
-        },
-        (err) => {
-          let componentProps = {
-            success: false,
-            message: err.error.message || `Server Error Please try again`,
-            button: 'Okay',
-          };
-          this.loadingPresent.dismiss();
-          this.presentModal(
-            ActionResultComponent,
-            'my-modal',
-            componentProps,
-            ''
-          );
-        }
-      );
-    }
+    setTimeout(() => {
+      if (findFinished.length) {
+        this.loadingPresent.dismiss();
+        this.joinRoom = false;
+      } else {
+        this.api.room.delete(this.currentRoom).subscribe(
+          (res: any) => {
+            console.log(res);
+            this.joinRoom = false;
+            this.loadingPresent.dismiss();
+            // this.getParticipants();
+          },
+          (err) => {
+            let componentProps = {
+              success: false,
+              message: err.error.message || `Server Error Please try again`,
+              button: 'Okay',
+            };
+            this.loadingPresent.dismiss();
+            this.presentModal(
+              ActionResultComponent,
+              'my-modal',
+              componentProps,
+              ''
+            );
+          }
+        );
+      }
+    }, 1000);
   }
 }
