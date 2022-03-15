@@ -297,8 +297,43 @@ export class VideoConferenceComponent implements OnInit {
     setTimeout(() => {
       this.joinRoom = true;
       this.loadingPresent.dismiss();
-      this.nextTransaction();
+      // this.nextTransaction();
+      this.getCurrentTransactionQueue(this.transactions);
     }, 1000);
+  }
+
+  getCurrentTransactionQueue(transactions: Array<any> = []) {
+    console.log(transactions);
+    let tempRoom: any;
+    let notaryQuery: QueryParams = {
+      find: [{ field: '_notaryId', operator: '=', value: this.me._id }],
+    };
+    console.log(notaryQuery);
+    this.api.room.get(notaryQuery).subscribe(async (res: any) => {
+      console.log(res);
+      if (res.env.room.length) {
+        tempRoom = res.env.room[0];
+        console.log(tempRoom);
+        this.remoteCallDetails = res.env.room[0].currentTransaction.sender;
+        this.currentRoom = res.env.room[0]._id;
+        console.log(this.currentRoom);
+        let currentExistingTransaction: any = transactions.find(
+          (transaction: any) =>
+            transaction._documents[0].queue ===
+            tempRoom.currentTransaction._documents[0].queue
+        );
+        if (currentExistingTransaction) {
+          console.log(currentExistingTransaction);
+          this.currentTransaction = currentExistingTransaction;
+          this.currentTransactionIndex =
+            parseInt(currentExistingTransaction._documents[0].queue) - 1;
+          console.log(this.currentTransactionIndex);
+          this.selectDocumentToview(this.currentTransaction._documents[0]);
+          this.getImages();
+        }
+      } else this.nextTransaction();
+    });
+    console.log(this.currentTransaction);
   }
 
   nextTransaction() {
@@ -476,27 +511,38 @@ export class VideoConferenceComponent implements OnInit {
   leaveMeeting(event?: any) {
     console.log(event);
     this.presentLoading('Leaving...');
-    this.api.room.delete(this.currentRoom).subscribe(
-      (res: any) => {
-        console.log(res);
-        this.joinRoom = false;
-        this.loadingPresent.dismiss();
-        this.getParticipants();
-      },
-      (err) => {
-        let componentProps = {
-          success: false,
-          message: err.error.message || `Server Error Please try again`,
-          button: 'Okay',
-        };
-        this.loadingPresent.dismiss();
-        this.presentModal(
-          ActionResultComponent,
-          'my-modal',
-          componentProps,
-          ''
-        );
-      }
-    );
+
+    let findFinished: any = this.transactions.filter((el: any) => {
+      return (el.transactionStatus = 'Pending');
+    });
+
+    console.log(findFinished);
+    if (findFinished.length) {
+      this.loadingPresent.dismiss();
+      this.joinRoom = false;
+    } else {
+      this.api.room.delete(this.currentRoom).subscribe(
+        (res: any) => {
+          console.log(res);
+          this.joinRoom = false;
+          this.loadingPresent.dismiss();
+          // this.getParticipants();
+        },
+        (err) => {
+          let componentProps = {
+            success: false,
+            message: err.error.message || `Server Error Please try again`,
+            button: 'Okay',
+          };
+          this.loadingPresent.dismiss();
+          this.presentModal(
+            ActionResultComponent,
+            'my-modal',
+            componentProps,
+            ''
+          );
+        }
+      );
+    }
   }
 }
