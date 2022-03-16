@@ -529,7 +529,7 @@ export class VideoConferenceComponent implements OnInit {
 
       setTimeout(() => {
         if (getCurrentSchedTemp?.conferenceStatus === 'Pending') {
-          console.log('HINDI NADELETE TANGA');
+          // console.log('HINDI NADELETE TANGA');
           this.joinRoom = false;
           this.loadingPresent.dismiss();
           this.getParticipants();
@@ -540,7 +540,7 @@ export class VideoConferenceComponent implements OnInit {
               this.joinRoom = false;
               this.loadingPresent.dismiss();
               this.getParticipants();
-              console.log('NADELETE NA POTANGINA');
+              // console.log('NADELETE NA POTANGINA');
             },
             (err) => {
               let componentProps = {
