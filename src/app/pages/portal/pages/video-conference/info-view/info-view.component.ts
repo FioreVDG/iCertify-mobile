@@ -61,6 +61,9 @@ export class InfoViewComponent implements OnInit {
         image.url = await this.getTempLink(
           this.details.images[image.fcname].path_display
         );
+        image['loaded'] = false;
+        let fileType = this.details.images[image.fcname].name.split('.').pop();
+        image['isImg'] = fileType != 'pdf';
       } else delete image.url;
 
       console.log(this._images);
@@ -79,6 +82,10 @@ export class InfoViewComponent implements OnInit {
     } else delete this.documentDisplay;
 
     this.loadingPresent.dismiss();
+  }
+
+  fileLoaded(index: number) {
+    this._images[index].loaded = true;
   }
 
   async getTempLink(data: any) {

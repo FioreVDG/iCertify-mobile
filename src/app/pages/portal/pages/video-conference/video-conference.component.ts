@@ -242,7 +242,7 @@ export class VideoConferenceComponent implements OnInit {
     });
     modal.onDidDismiss().then((res: any) => {
       console.log(res.data);
-      this.currentDocument.documentStatus = res.data;
+      if (res.data) this.currentDocument.documentStatus = res.data;
     });
 
     return await modal.present();
@@ -492,7 +492,10 @@ export class VideoConferenceComponent implements OnInit {
     let filtSkip: any = this.currentTransaction?._documents.filter(
       (o: any) => o.documentStatus === 'Skipped'
     );
-    if (filtPending?.length || filtSkip?.length) return true;
+    // console.log(filtPending);
+    console.log(filtSkip);
+
+    if (filtPending.length || filtSkip.length) return true;
     else return false;
   }
 

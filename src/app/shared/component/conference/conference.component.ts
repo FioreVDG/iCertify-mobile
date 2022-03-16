@@ -368,6 +368,7 @@ export class ConferenceComponent implements OnInit {
     });
 
     this.client.on(ClientEvent.PeerLeave, (evt) => {
+      console.log('-- Peer Leave');
       const stream = evt.stream as Stream;
       if (stream) {
         stream.stop();
@@ -375,6 +376,7 @@ export class ConferenceComponent implements OnInit {
           (call) => call !== `${this.getRemoteId(stream)}`
         );
         console.log(`${evt.uid} left from this channel`);
+        document.getElementById('remote')?.removeChild(this.video2);
       }
     });
   }
