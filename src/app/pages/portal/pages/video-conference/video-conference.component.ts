@@ -10,7 +10,11 @@ import { ActionResultComponent } from './../../../../shared/modals/action-result
 import { NotarizedDocumentComponent } from './notarized-document/notarized-document.component';
 import { DropboxService } from './../../../../services/dropbox/dropbox.service';
 import { ApiService } from './../../../../services/api/api.service';
-import { LoadingController, AlertController } from '@ionic/angular';
+import {
+  LoadingController,
+  AlertController,
+  PopoverController,
+} from '@ionic/angular';
 import { AuthService } from './../../../../services/auth/auth.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ModalController } from '@ionic/angular';
@@ -55,6 +59,18 @@ export class VideoConferenceComponent implements OnInit {
   currentRoom: any;
   remoteCallDetails: any;
   remainingDocsChecker: any;
+
+  settings: any;
+  expectedStart: any;
+  expectedStartE: any;
+  actualStart: any;
+  nextIndigent: any;
+  notarialStatus: any;
+  allowance = 180;
+  runningDuration: number = 0;
+  runningDurInterval: any;
+
+  isIndigentJoined = false;
 
   async presentLoading(msg: any) {
     this.loadingPresent = await this.loadingController.create({
@@ -147,6 +163,7 @@ export class VideoConferenceComponent implements OnInit {
     private api: ApiService,
     public modalController: ModalController,
     private loadingController: LoadingController,
+    private popOverController: PopoverController,
     private dbx: DropboxService,
     private ac: AlertController
   ) {}
@@ -160,8 +177,15 @@ export class VideoConferenceComponent implements OnInit {
       console.log(res);
       if (res) {
         this.me = res.env.user;
-        this.getParticipants();
-        this.loading = false;
+
+        this.api.cluster
+          .getOneNotary(this.me._notaryId)
+          .subscribe((resp: any) => {
+            this.settings = resp.env.cluster;
+            console.log(this.settings);
+            this.getParticipants();
+            this.loading = false;
+          });
       }
     });
     this.remainingDocsChecker = setInterval(() => {
@@ -242,7 +266,13 @@ export class VideoConferenceComponent implements OnInit {
     });
     modal.onDidDismiss().then((res: any) => {
       console.log(res.data);
-      if (res.data) this.currentDocument.documentStatus = res.data;
+      if (res.data) {
+        clearInterval(this.runningDurInterval);
+
+        this.actualStart = undefined;
+        this.notarialStatus = undefined;
+        this.currentDocument.documentStatus = res.data;
+      }
     });
 
     return await modal.present();
@@ -275,6 +305,11 @@ export class VideoConferenceComponent implements OnInit {
             componentProps,
             'Skip'
           );
+
+          this.isIndigentJoined = false;
+          clearInterval(this.runningDurInterval);
+          this.actualStart = undefined;
+          this.notarialStatus = undefined;
         }
       },
       (err) => {
@@ -282,7 +317,10 @@ export class VideoConferenceComponent implements OnInit {
       }
     );
   }
-
+  indigentJoin() {
+    this.isIndigentJoined = true;
+    // console.log('ASDASDASDASDASDASDSAD');
+  }
   joinMeeting(sched: any) {
     this.presentLoading('Joining...');
     this.currentSchedule = sched;
@@ -328,6 +366,7 @@ export class VideoConferenceComponent implements OnInit {
           this.currentTransactionIndex =
             parseInt(currentExistingTransaction._documents[0].queue) - 1;
           console.log(this.currentTransactionIndex);
+          this.initDates();
           this.selectDocumentToview(this.currentTransaction._documents[0]);
           this.getImages();
         }
@@ -404,6 +443,8 @@ export class VideoConferenceComponent implements OnInit {
     this.presentLoading('Initiating room details...');
     this.currentTransaction = this.transactions[this.currentTransactionIndex];
     console.log(this.currentTransaction);
+    this.isIndigentJoined = false;
+    this.initDates();
     this.selectDocumentToview(this.currentTransaction._documents[0]);
     this.getImages();
 
@@ -493,7 +534,7 @@ export class VideoConferenceComponent implements OnInit {
       (o: any) => o.documentStatus === 'Skipped'
     );
     // console.log(filtPending);
-    console.log(filtSkip);
+    // console.log(filtSkip);
 
     if (filtPending.length || filtSkip.length) return true;
     else return false;
@@ -514,7 +555,8 @@ export class VideoConferenceComponent implements OnInit {
   leaveMeeting(event?: any) {
     console.log(event);
     this.presentLoading('Leaving...');
-
+    this.isIndigentJoined = false;
+    this.isVideoInit = false;
     let query: any = {
       find: [
         {
@@ -535,6 +577,11 @@ export class VideoConferenceComponent implements OnInit {
           // console.log('HINDI NADELETE TANGA');
           this.joinRoom = false;
           this.loadingPresent.dismiss();
+
+          clearInterval(this.runningDurInterval);
+
+          this.actualStart = undefined;
+          this.notarialStatus = undefined;
           this.getParticipants();
         } else {
           this.api.room.delete(this.currentRoom).subscribe(
@@ -542,6 +589,10 @@ export class VideoConferenceComponent implements OnInit {
               console.log(res);
               this.joinRoom = false;
               this.loadingPresent.dismiss();
+              clearInterval(this.runningDurInterval);
+
+              this.actualStart = undefined;
+              this.notarialStatus = undefined;
               this.getParticipants();
               // console.log('NADELETE NA POTANGINA');
             },
@@ -563,5 +614,65 @@ export class VideoConferenceComponent implements OnInit {
         }
       }, 1000);
     });
+  }
+  isVideoInit: boolean = false;
+  checkVideoInit() {
+    this.isVideoInit = true;
+    this.runTimer();
+  }
+  initDates() {
+    let duration = 0;
+
+    this.settings.barangays.forEach((el: any) => {
+      if (
+        el._barangay.brgyCode === this.currentTransaction._barangay.brgyCode
+      ) {
+        duration = el.duration * 60;
+      }
+    });
+
+    this.runningDuration = 0;
+    this.expectedStart =
+      new Date(this.currentTransaction._documents[0].schedule).getTime() / 1000;
+    this.expectedStartE = this.expectedStart + this.allowance;
+    this.nextIndigent = this.expectedStart + duration;
+    if (this.runningDurInterval) clearInterval(this.runningDurInterval);
+
+    if (this.isVideoInit) {
+      this.runTimer();
+    }
+  }
+
+  runTimer() {
+    this.runningDurInterval = setInterval(() => {
+      this.runningDuration += 1;
+
+      if (!this.isIndigentJoined) {
+        this.actualStart = Date.now() / 1000;
+        let currTime = this.actualStart;
+        if (currTime > this.expectedStartE) {
+          this.notarialStatus = 'Delay';
+        } else if (
+          currTime >= this.expectedStart &&
+          currTime <= this.expectedStartE
+        ) {
+          this.notarialStatus = 'On Time';
+        } else if (currTime < this.expectedStart) {
+          this.notarialStatus = 'Early';
+        }
+      }
+
+      // console.log('DURATION: ', this.runningDuration);
+      // console.log('EXPECTEDSTART: ', this.expectedStart);
+      // console.log('NEXT INDIGENT:', this.nextIndigent);
+      // if (this.notarialStatus) {
+      //   console.log('STATUS:', this.notarialStatus);
+
+      //   console.log('ACTUALSTART: ', this.actualStart);
+      // }
+    }, 1000);
+    // setTimeout(() => {
+    //   if (!this.stopTimer) this.runTimer();
+    // }, 1000);
   }
 }

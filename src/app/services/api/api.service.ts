@@ -5,6 +5,7 @@ import { Inject, Injectable } from '@angular/core';
 import { HttpService } from '../http/http.service';
 import { AgoraService } from './agora/agora.service';
 import { DocumentLogsService } from './document-logs/document-logs.service';
+import { ClusterService } from './cluster/cluster.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +17,7 @@ export class ApiService {
     public conference: ConferenceService,
     public agora: AgoraService,
     public document: DocumentService,
-    public documentlogs: DocumentLogsService
+    public documentlogs: DocumentLogsService,
+    public cluster: ClusterService
   ) {}
 }

@@ -131,23 +131,46 @@
       >
     </ion-row>
     <ion-row>
-      <ion-col>
-        <ion-title
-          color="primary"
-          style="text-align: center"
-          *ngIf="currentDocument"
-        >
+      <ion-col size="8">
+        <ion-title color="primary" *ngIf="currentDocument">
           {{ currentDocument.refCode }}</ion-title
         >
       </ion-col>
+
+      <!-- paayos po ng UI -->
+      <ion-col style="display: flex; padding: 0px" color="primary" size="4">
+        <p style="width: 50%">{{ runningDuration * 1000 | date: "mm:ss" }}</p>
+        <div style="width: 50%">
+          <p>
+            {{ notarialStatus }}
+
+            <ion-icon id="dates" name="information-circle-outline"></ion-icon>
+          </p>
+        </div>
+      </ion-col>
     </ion-row>
   </ion-grid>
+
+  <!-- paayos po ng UI  -->
+  <ion-popover trigger="dates">
+    <ng-template>
+      <ion-content>
+        <div>
+          Expected Start: {{ expectedStart * 1000 | date: "shortTime" }}
+        </div>
+        <div>Next Indigent: {{ nextIndigent * 1000 | date: "shortTime" }}</div>
+      </ion-content>
+    </ng-template>
+  </ion-popover>
   <app-conference
     id="toScreenShot"
     [channelName]="currentSchedule._id"
     [me]="me"
     (onLeaveMeeting)="leaveMeeting($event)"
+    (setActualDate)="indigentJoin()"
+    (initVideo)="checkVideoInit()"
   ></app-conference>
+
   <ion-fab
     style="display: fixed; right: 0.7rem; bottom: 2rem"
     *ngIf="checkDocumentStatus2()"
