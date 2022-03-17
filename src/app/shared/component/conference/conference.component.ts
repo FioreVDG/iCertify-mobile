@@ -81,7 +81,7 @@ export class ConferenceComponent implements OnInit {
   public localAudio: boolean = true;
   public localVideo: boolean = true;
   tempSrc: any;
-
+  //s
   soundMeter: any;
 
   @Output() onLeaveMeeting: any = new EventEmitter<any>();
