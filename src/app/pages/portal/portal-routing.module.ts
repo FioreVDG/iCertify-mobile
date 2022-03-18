@@ -29,6 +29,11 @@ const routes: Routes = [
             './pages/brgy-video-conference/brgy-video-conference.module'
           ).then((r) => r.BrgyVideoConferenceModule),
       },
+      {
+        path: 'reports',
+        loadChildren: () =>
+          import('./pages/reports/reports.module').then((r) => r.ReportsModule),
+      },
     ],
   },
 ];

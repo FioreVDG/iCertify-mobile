@@ -18,6 +18,14 @@ export class PortalComponent implements OnInit {
   me: any;
   menuList = [
     {
+      label: 'Dashboard',
+      router: '/portal/dashboard',
+      onSelect: () => {
+        this.onMenuClick();
+      },
+      icon: 'stats-chart-outline',
+    },
+    {
       label: 'Video Conference',
       router: '/portal/video-conference',
       onSelect: () => {

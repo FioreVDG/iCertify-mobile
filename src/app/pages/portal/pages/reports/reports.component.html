@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-buttons>
+        <ion-menu-button color="light"></ion-menu-button>
+      </ion-buttons>
+    </ion-buttons>
+    <p style="color: #fff">Reports</p>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <ion-item
+    id="acc"
+    (click)="
+      accordIcon === 'caret-down-outline'
+        ? (accordIcon = 'caret-up-outline')
+        : (accordIcon = 'caret-down-outline')
+    "
+    lines="none"
+    class="accordion"
+    ><span style="color: #3c218d; font-weight: bold; letter-spacing: 2px"
+      >Filters</span
+    ><ion-icon color="primary" slot="end" [name]="accordIcon"></ion-icon
+  ></ion-item>
+  <div class="panel">
+    <ion-item lines="none">Select Date</ion-item>
+    <form [formGroup]="filter">
+      <ion-item class="filter" lines="none" *ngFor="let i of formFields">
+        <ion-label>{{ i.placeholder }}</ion-label>
+        <ion-select [formControlName]="i.key" *ngIf="i.type === 'select'">
+          <ion-select-option
+            [value]="o.value ? o.value : o"
+            *ngFor="let o of i.choices"
+            >{{ o.label ? o.label : o }}</ion-select-option
+          ></ion-select
+        >
+      </ion-item>
+    </form>
+  </div>
+  <div align="center">
+    <ion-button slot="center" color="primary"> Generate Report </ion-button>
+  </div>
+  <!-- <div style="display: flex; justify-content: center">
+    <highcharts-chart
+      class="chart"
+      [Highcharts]="highcharts"
+      [options]="chartOpt"
+    >
+    </highcharts-chart>
+  </div> -->
+</ion-content>
