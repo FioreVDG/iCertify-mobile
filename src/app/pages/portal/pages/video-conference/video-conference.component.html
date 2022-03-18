@@ -155,10 +155,26 @@
   <ion-popover trigger="dates">
     <ng-template>
       <ion-content>
-        <div>
-          Expected Start: {{ expectedStart * 1000 | date: "shortTime" }}
-        </div>
-        <div>Next Indigent: {{ nextIndigent * 1000 | date: "shortTime" }}</div>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              Expected Start: {{ expectedStart * 1000 | date: "shortTime" }}
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              Next Indigent:
+              {{
+                nextIndigent === "Skipped" || nextIndigent === "N/A"
+                  ? nextIndigent
+                  : (nextIndigent * 1000 | date: "shortTime")
+              }}
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col> Skips: {{ skipCount }} </ion-col>
+          </ion-row>
+        </ion-grid>
       </ion-content>
     </ng-template>
   </ion-popover>
@@ -191,8 +207,14 @@
         label="Mark as Unnotarized"
         ><ion-icon name="thumbs-down"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button color="" (click)="skipDocument()" label="Skip"
-        ><ion-icon name="reload"></ion-icon>
+      <ion-fab-button
+        color=""
+        [disabled]="skipDisabled"
+        (click)="skipDocument()"
+        label="Skip"
+      >
+        <ion-icon *ngIf="!skipDisabled" name="reload"></ion-icon>
+        <ion-label *ngIf="skipDisabled">{{ skipDelay }}</ion-label>
       </ion-fab-button>
     </ion-fab-list>
   </ion-fab>

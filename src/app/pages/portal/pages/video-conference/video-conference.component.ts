@@ -71,6 +71,11 @@ export class VideoConferenceComponent implements OnInit {
   runningDurInterval: any;
 
   isIndigentJoined = false;
+  skipDelay = 10;
+  skipDisabled = true;
+  isVideoInit: boolean = false;
+
+  skipCount = 0;
 
   async presentLoading(msg: any) {
     this.loadingPresent = await this.loadingController.create({
@@ -268,7 +273,9 @@ export class VideoConferenceComponent implements OnInit {
       console.log(res.data);
       if (res.data) {
         clearInterval(this.runningDurInterval);
-
+        if (this.currentDocument.documentStatus === 'Skipped') {
+          this.skipCount -= 1;
+        }
         this.actualStart = undefined;
         this.notarialStatus = undefined;
         this.currentDocument.documentStatus = res.data;
@@ -308,6 +315,7 @@ export class VideoConferenceComponent implements OnInit {
 
           this.isIndigentJoined = false;
           clearInterval(this.runningDurInterval);
+          this.skipCount += 1;
           this.actualStart = undefined;
           this.notarialStatus = undefined;
         }
@@ -328,6 +336,9 @@ export class VideoConferenceComponent implements OnInit {
     this.currentSchedule._folderIds.forEach((folder: any) => {
       folder._transactions.forEach((transaction: any) => {
         this.transactions.push(transaction);
+        if (transaction._documents[0].documentStatus === 'Skipped') {
+          this.skipCount += 1;
+        }
       });
     });
     console.log(this.transactions);
@@ -366,8 +377,8 @@ export class VideoConferenceComponent implements OnInit {
           this.currentTransactionIndex =
             parseInt(currentExistingTransaction._documents[0].queue) - 1;
           console.log(this.currentTransactionIndex);
-          this.initDates();
           this.selectDocumentToview(this.currentTransaction._documents[0]);
+          this.initDates();
           this.getImages();
         }
       } else this.nextTransaction();
@@ -444,8 +455,9 @@ export class VideoConferenceComponent implements OnInit {
     this.currentTransaction = this.transactions[this.currentTransactionIndex];
     console.log(this.currentTransaction);
     this.isIndigentJoined = false;
-    this.initDates();
     this.selectDocumentToview(this.currentTransaction._documents[0]);
+
+    this.initDates();
     this.getImages();
 
     let notaryQuery: QueryParams = {
@@ -507,6 +519,17 @@ export class VideoConferenceComponent implements OnInit {
           this.currentTransaction.sender.images[image.fcname].path_display
         );
       } else delete image.url;
+
+      if (
+        image.fcname === 'cert_of_indigency' &&
+        this.currentTransaction.sender.images.reason_coi
+      ) {
+        delete image.url;
+        image.loaded = true;
+        image.reason_coi = this.currentTransaction.sender.images.reason_coi;
+      } else {
+        delete image.reason_coi;
+      }
 
       console.log(this._images);
     });
@@ -579,6 +602,7 @@ export class VideoConferenceComponent implements OnInit {
           this.loadingPresent.dismiss();
 
           clearInterval(this.runningDurInterval);
+          this.skipCount = 0;
 
           this.actualStart = undefined;
           this.notarialStatus = undefined;
@@ -590,6 +614,7 @@ export class VideoConferenceComponent implements OnInit {
               this.joinRoom = false;
               this.loadingPresent.dismiss();
               clearInterval(this.runningDurInterval);
+              this.skipCount = 0;
 
               this.actualStart = undefined;
               this.notarialStatus = undefined;
@@ -615,11 +640,26 @@ export class VideoConferenceComponent implements OnInit {
       }, 1000);
     });
   }
-  isVideoInit: boolean = false;
+
   checkVideoInit() {
     this.isVideoInit = true;
     this.runTimer();
+    this.delaySkip();
   }
+
+  delaySkip() {
+    this.skipDelay = 10;
+    this.skipDisabled = true;
+
+    let interval = setInterval(() => {
+      this.skipDelay -= 1;
+      if (this.skipDelay <= 0) {
+        clearInterval(interval);
+        this.skipDisabled = false;
+      }
+    }, 1000);
+  }
+
   initDates() {
     let duration = 0;
 
@@ -635,10 +675,34 @@ export class VideoConferenceComponent implements OnInit {
     this.expectedStart =
       new Date(this.currentTransaction._documents[0].schedule).getTime() / 1000;
     this.expectedStartE = this.expectedStart + this.allowance;
-    this.nextIndigent = this.expectedStart + duration;
+    // this.nextIndigent = this.expectedStart + duration;
+
+    if (
+      parseInt(this.currentTransaction._documents[0].queue) ===
+        this.transactionCount ||
+      this.currentTransaction._documents[0].documentStatus !==
+        'Pending for Notary'
+    ) {
+      if (this.skipCount > 0) {
+        if (
+          this.currentDocument.documentStatus === 'Skipped' &&
+          this.skipCount === 1
+        ) {
+          this.nextIndigent = 'N/A';
+        } else {
+          this.nextIndigent = 'Skipped';
+        }
+      } else this.nextIndigent = 'N/A';
+    } else {
+      this.nextIndigent = this.expectedStart + duration;
+    }
+
     if (this.runningDurInterval) clearInterval(this.runningDurInterval);
 
+    console.log(this.nextIndigent);
+
     if (this.isVideoInit) {
+      this.delaySkip();
       this.runTimer();
     }
   }

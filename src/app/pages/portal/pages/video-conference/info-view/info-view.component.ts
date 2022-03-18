@@ -66,6 +66,17 @@ export class InfoViewComponent implements OnInit {
         image['isImg'] = fileType != 'pdf';
       } else delete image.url;
 
+      if (
+        image.fcname === 'cert_of_indigency' &&
+        this.details.images.reason_coi
+      ) {
+        delete image.url;
+        image.loaded = true;
+        image.reason_coi = this.details.images.reason_coi;
+      } else {
+        delete image.reason_coi;
+      }
+
       console.log(this._images);
     });
 
