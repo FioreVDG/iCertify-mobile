@@ -103,7 +103,7 @@ export class AppComponent {
                       }
 
                       if (
-                        this._location.isCurrentPathEqualTo('/portal/reports')
+                        this._location.isCurrentPathEqualTo('/portal/dashboard')
                       ) {
                         this.logoutButtonAlert();
                       } else if (
