@@ -61,7 +61,21 @@ export class InfoViewComponent implements OnInit {
         image.url = await this.getTempLink(
           this.details.images[image.fcname].path_display
         );
+        image['loaded'] = false;
+        let fileType = this.details.images[image.fcname].name.split('.').pop();
+        image['isImg'] = fileType != 'pdf';
       } else delete image.url;
+
+      if (
+        image.fcname === 'cert_of_indigency' &&
+        this.details.images.reason_coi
+      ) {
+        delete image.url;
+        image.loaded = true;
+        image.reason_coi = this.details.images.reason_coi;
+      } else {
+        delete image.reason_coi;
+      }
 
       console.log(this._images);
     });
@@ -79,6 +93,10 @@ export class InfoViewComponent implements OnInit {
     } else delete this.documentDisplay;
 
     this.loadingPresent.dismiss();
+  }
+
+  fileLoaded(index: number) {
+    this._images[index].loaded = true;
   }
 
   async getTempLink(data: any) {

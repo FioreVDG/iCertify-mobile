@@ -85,6 +85,8 @@ export class ConferenceComponent implements OnInit {
   soundMeter: any;
 
   @Output() onLeaveMeeting: any = new EventEmitter<any>();
+  @Output() setActualDate: any = new EventEmitter<any>();
+  @Output() initVideo: any = new EventEmitter<any>();
 
   loading: any;
   toasting: any;
@@ -274,6 +276,7 @@ export class ConferenceComponent implements OnInit {
             this.join(
               (uid) => {
                 this.publish();
+                this.initVideo.emit();
                 this.loading.dismiss();
               },
               (error) => {
@@ -340,6 +343,7 @@ export class ConferenceComponent implements OnInit {
       const stream = evt.stream;
       const id = this.getRemoteId(stream);
       if (!this.remoteCalls.length) {
+        this.setActualDate.emit();
         this.remoteCalls.push(id);
         this.video2 = document.createElement('video');
         this.video2.style.width = 'inherit';
@@ -368,6 +372,7 @@ export class ConferenceComponent implements OnInit {
     });
 
     this.client.on(ClientEvent.PeerLeave, (evt) => {
+      console.log('-- Peer Leave');
       const stream = evt.stream as Stream;
       if (stream) {
         stream.stop();
@@ -375,6 +380,7 @@ export class ConferenceComponent implements OnInit {
           (call) => call !== `${this.getRemoteId(stream)}`
         );
         console.log(`${evt.uid} left from this channel`);
+        document.getElementById('remote')?.removeChild(this.video2);
       }
     });
   }
