@@ -1,6 +1,6 @@
-import { Inject, Injectable } from '@angular/core';
 import { QueryParams } from 'src/app/models/queryparams.iterface';
 import { HttpService } from './../../http/http.service';
+import { Inject, Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',

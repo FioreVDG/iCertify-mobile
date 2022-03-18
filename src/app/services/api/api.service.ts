@@ -1,3 +1,5 @@
+import { ClusterService } from './cluster/cluster.service';
+import { DashboardService } from './dashboard/dashboard.service';
 import { DocumentService } from './document/document.service';
 import { ConferenceService } from './conference/conference.service';
 import { RoomService } from './room/room.service';
@@ -18,6 +20,7 @@ export class ApiService {
     public agora: AgoraService,
     public document: DocumentService,
     public documentlogs: DocumentLogsService,
+    public dashboard: DashboardService,
     public cluster: ClusterService
   ) {}
 }
