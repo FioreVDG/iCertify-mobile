@@ -14,6 +14,7 @@ import {
   LoadingController,
   AlertController,
   PopoverController,
+  Platform,
 } from '@ionic/angular';
 import { AuthService } from './../../../../services/auth/auth.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -21,6 +22,7 @@ import { ModalController } from '@ionic/angular';
 import { QueryParams } from 'src/app/models/queryparams.iterface';
 import html2canvas from 'html2canvas';
 import { ConferenceComponent } from 'src/app/shared/component/conference/conference.component';
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 
 @Component({
   selector: 'app-video-conference',
@@ -170,7 +172,9 @@ export class VideoConferenceComponent implements OnInit {
     private loadingController: LoadingController,
     private popOverController: PopoverController,
     private dbx: DropboxService,
-    private ac: AlertController
+    private ac: AlertController,
+    private androidPermissions: AndroidPermissions,
+    private platform: Platform
   ) {}
 
   ngOnInit() {}
@@ -329,6 +333,47 @@ export class VideoConferenceComponent implements OnInit {
     this.isIndigentJoined = true;
     // console.log('ASDASDASDASDASDASDSAD');
   }
+  permissionsToCheck: any[] = [
+    this.androidPermissions.PERMISSION.CAMERA,
+    // this.androidPermissions.PERMISSION.MODIFY_AUDIO_SETTINGS,
+    this.androidPermissions.PERMISSION.RECORD_AUDIO,
+  ];
+  needsPermissions: any[] = [];
+
+  async checkPermission(permissionToCheck) {
+    return await this.androidPermissions.checkPermission(permissionToCheck);
+  }
+  async requestPermission(sched: any) {
+    for (let permission of this.permissionsToCheck) {
+      let result = await this.checkPermission(permission);
+      if (!result.hasPermission) {
+        this.needsPermissions.push(permission);
+      } else {
+        if (this.needsPermissions.length) {
+          this.needsPermissions = this.needsPermissions.filter((el) => {
+            return el !== permission;
+          });
+        }
+      }
+    }
+
+    console.log(this.needsPermissions);
+    console.log(this.permissionsToCheck);
+    if (this.needsPermissions.length) {
+      this.androidPermissions
+        .requestPermissions(this.needsPermissions)
+        .then((res) => {
+          console.log(res);
+          if (res.hasPermission) {
+            this.joinMeeting(sched);
+          } else {
+          }
+        });
+    } else {
+      this.joinMeeting(sched);
+    }
+  }
+
   joinMeeting(sched: any) {
     this.presentLoading('Joining...');
     this.currentSchedule = sched;
