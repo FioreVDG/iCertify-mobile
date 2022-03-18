@@ -343,7 +343,9 @@ export class VideoConferenceComponent implements OnInit {
   async checkPermission(permissionToCheck) {
     return await this.androidPermissions.checkPermission(permissionToCheck);
   }
+
   async requestPermission(sched: any) {
+    ////////////////////////////// comment out this part for testing WEB
     for (let permission of this.permissionsToCheck) {
       let result = await this.checkPermission(permission);
       if (!result.hasPermission) {
@@ -356,9 +358,9 @@ export class VideoConferenceComponent implements OnInit {
         }
       }
     }
-
     console.log(this.needsPermissions);
     console.log(this.permissionsToCheck);
+    ////////////////////////////////////////////////////
     if (this.needsPermissions.length) {
       this.androidPermissions
         .requestPermissions(this.needsPermissions)

@@ -103,9 +103,7 @@ export class AppComponent {
                       }
 
                       if (
-                        this._location.isCurrentPathEqualTo(
-                          '/portal/video-conference'
-                        )
+                        this._location.isCurrentPathEqualTo('/portal/reports')
                       ) {
                         this.logoutButtonAlert();
                       } else if (
