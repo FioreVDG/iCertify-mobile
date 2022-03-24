@@ -80,6 +80,7 @@
     <ion-row>
       <ion-col size="12">
         <ion-card class="img-card" *ngFor="let img of _images; let i = index">
+          <small *ngIf="img.reason_coi">N/A : {{ img.reason_coi }}</small>
           <img
             *ngIf="img?.url && img.isImg && !img.reason_coi"
             [src]="img?.url"
@@ -93,7 +94,6 @@
             [render-text]="true"
             [original-size]="false"
           ></pdf-viewer>
-          <small *ngIf="img.reason_coi">N/A : {{ img.reason_coi }}</small>
 
           <p>{{ img.label }}</p>
         </ion-card>

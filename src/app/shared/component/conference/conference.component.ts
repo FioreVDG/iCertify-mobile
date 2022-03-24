@@ -358,6 +358,8 @@ export class ConferenceComponent implements OnInit {
         setTimeout(() => {
           document.getElementById('remote')?.appendChild(this.video2);
         }, 500);
+      } else {
+        document.getElementById('remote')?.removeChild(this.video2);
       }
     });
 
@@ -368,6 +370,7 @@ export class ConferenceComponent implements OnInit {
         stream.stop();
         this.remoteCalls = [];
         console.log(`Remote stream is removed ${stream.getId()}`);
+        document.getElementById('remote')?.removeChild(this.video2);
       }
     });
 

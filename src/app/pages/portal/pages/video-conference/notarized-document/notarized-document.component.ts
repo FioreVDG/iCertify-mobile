@@ -136,7 +136,7 @@ export class NotarizedDocumentComponent implements OnInit {
         (res: any) => {
           console.log(res);
           if (res) {
-            this.presentToast('File Successfully Uploaded!');
+            // this.presentToast('File Successfully Uploaded!');
             event.screenShots = [res.result];
             console.log(event);
             this.api.document
